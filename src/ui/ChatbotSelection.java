@@ -33,9 +33,8 @@ public class ChatbotSelection {
         botGrid.setVgap(20);
         botGrid.setPadding(new Insets(20));
 
-        // Define the 7 Chatbots
-        // In a real app, you might give them different stats here
-        String[] botNames = {"CYBER", "PIXEL", "GLITCH", "NANO", "TERA", "GIGA", "MEGA"};
+        // The 7 Chatbots
+        String[] botNames = {"CHATGPT", "GEMINI", "GROK", "COPILOT", "CLAUDE", "DEEPSEEK", "PERPLEXITY"};
 
         for (String name : botNames) {
             VBox botCard = createBotCard(name);
@@ -58,15 +57,36 @@ public class ChatbotSelection {
         nameLabel.setTextFill(Color.WHITE);
         nameLabel.setFont(Theme.FONT_NORMAL);
 
+        // We still calculate stats here so the Bot object is created correctly...
+        String[] stats = assignStats(name);
+        // ...BUT we do NOT display them to the user yet. (Hidden as per proposal)
+
         Button btnSelect = Theme.createStyledButton("SELECT");
         btnSelect.setOnAction(e -> {
-            // Logic: Create the bot with random stats for now (hidden logic)
-            Chatbot selectedBot = new Chatbot(name, "PROGRAMMING", "THEORETICAL");
+            // Create the specific bot with its unique stats
+            Chatbot selectedBot = new Chatbot(name, stats[0], stats[1]);
+
+            // Pass it to manager.
+            // Note: Manager will call bot.revealStats() ONLY after Subject Selection.
             manager.onChatbotSelected(selectedBot);
         });
 
         card.getChildren().addAll(avatar, nameLabel, btnSelect);
         return card;
+    }
+
+    // Unique Personalities (Hidden until game start)
+    private String[] assignStats(String name) {
+        switch (name) {
+            case "CHATGPT":  return new String[]{"INTRO", "MAPPINGS"};
+            case "GEMINI":  return new String[]{"OOP", "FUNCTIONAL"};
+            case "GROK": return new String[]{"PROCEDURAL", "EVENT_DRIVEN"};
+            case "COPILOT":   return new String[]{"FUNCTIONAL", "OOP"};
+            case "CLAUDE":   return new String[]{"IMP_DEC", "INTRO"};
+            case "DEEPSEEK":   return new String[]{"EVENT_DRIVEN", "IMP_DEC"};
+            case "PERPLEXITY":   return new String[]{"MAPPINGS", "PROCEDURAL"};
+            default:       return new String[]{"INTRO", "OOP"};
+        }
     }
 
     public VBox getLayout() {

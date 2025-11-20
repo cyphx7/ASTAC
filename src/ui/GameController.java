@@ -82,7 +82,6 @@ public class GameController {
         GameSession.GameResult result = session.submitAnswer(index);
 
         if (result == GameSession.GameResult.CORRECT) {
-            // Use Custom Overlay with a callback to check status AFTER they click "Continue"
             manager.showCustomAlert("CORRECT!", "Good job! Proceeding...", this::checkGameStatus);
         }
         else if (result == GameSession.GameResult.SAVED_BY_CHATBOT) {
@@ -92,10 +91,20 @@ public class GameController {
             manager.showCustomAlert("SAVED!", "You were wrong, but " + session.getCurrentChatbot().getName() + " saved you!", this::checkGameStatus);
         }
         else if (result == GameSession.GameResult.WRONG_AND_FAILED) {
-            manager.showCustomAlert("GAME OVER", "You were wrong!\nBot attempted to Save you, but FAILED.", manager::showMainMenu);
+            // --- GAME OVER CASE 1 (Failed Save) ---
+            int totalScore = manager.getGlobalScore() + session.getScore();
+            int percent = (int) ((totalScore / 14.0) * 100);
+
+            String msg = "You were wrong!\nBot attempted to Save you, but FAILED.\n\nFinal Score: " + totalScore + "/14 (" + percent + "%)";
+            manager.showCustomAlert("GAME OVER", msg, manager::showMainMenu);
         }
         else {
-            manager.showCustomAlert("GAME OVER", "You threw an exception! Final Score: " + manager.getGlobalScore(), manager::showMainMenu);
+            // --- GAME OVER CASE 2 (No Save Left) ---
+            int totalScore = manager.getGlobalScore() + session.getScore();
+            int percent = (int) ((totalScore / 14.0) * 100);
+
+            String msg = "You threw an exception!\n\nFinal Score: " + totalScore + "/14 (" + percent + "%)";
+            manager.showCustomAlert("GAME OVER", msg, manager::showMainMenu);
         }
     }
 
@@ -118,19 +127,56 @@ public class GameController {
         Chatbot bot = session.getCurrentChatbot();
         boolean success = bot.calculateSuccess(q.getSubject());
 
+        String subject = q.getSubject();
+        boolean isStrong = subject.equalsIgnoreCase(bot.getStrengthSubject());
+        boolean isWeak = subject.equalsIgnoreCase(bot.getWeaknessSubject());
+
+        int correctOpt = q.getCorrectAnswerIndex() + 1;
+        String dialogue;
+
         if (success) {
-            ui.getDialogLabel().setText("I am 90% sure it is Option " + (q.getCorrectAnswerIndex() + 1));
+            if (isStrong) {
+                dialogue = "I'm an expert at " + subject + "! The answer is definitely Option " + correctOpt + ".";
+            } else if (isWeak) {
+                dialogue = "Ugh, I hate " + subject + "... but I think it's Option " + correctOpt + "?";
+            } else {
+                dialogue = "I am 90% sure it is Option " + correctOpt + ".";
+            }
         } else {
             int wrong;
             do { wrong = new Random().nextInt(4); } while(wrong == q.getCorrectAnswerIndex());
-            ui.getDialogLabel().setText("I am guessing... Option " + (wrong + 1) + "?");
+
+            if (isStrong) {
+                dialogue = "Trust me, I know " + subject + ". It has to be Option " + (wrong + 1) + "!";
+            } else {
+                dialogue = "I have no idea. I'm guessing Option " + (wrong + 1) + "...";
+            }
         }
+
+        ui.getDialogLabel().setText(dialogue);
     }
 
     private void handleCopyPaste() {
         manager.markCopyUsed();
         ui.getBtnCopy().setDisable(true);
         ui.getBtnCopy().setText("COPY USED");
-        handleAskBot();
+
+        Question q = session.getCurrentQuestion();
+        Chatbot bot = session.getCurrentChatbot();
+        boolean success = bot.calculateSuccess(q.getSubject());
+
+        int finalChoice;
+        if (success) {
+            finalChoice = q.getCorrectAnswerIndex();
+        } else {
+            int wrong;
+            do { wrong = new Random().nextInt(4); } while(wrong == q.getCorrectAnswerIndex());
+            finalChoice = wrong;
+        }
+
+        manager.showCustomAlert("COPY PASTE",
+                "Bot chose Option " + (finalChoice + 1) + ".\nSubmitting...",
+                () -> handleAnswer(finalChoice)
+        );
     }
 }

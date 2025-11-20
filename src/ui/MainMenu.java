@@ -29,7 +29,7 @@ public class MainMenu {
         // --- THE FIX IS HERE ---
         // We changed 'startGame()' to 'startNewGame()' in the Manager
         btnPlay.setOnAction(e -> manager.startNewGame());
-
+        btnGuide.setOnAction(e -> manager.showGuide());
         btnExit.setOnAction(e -> System.exit(0));
 
         // Add visuals
