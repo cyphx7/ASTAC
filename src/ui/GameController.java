@@ -68,14 +68,20 @@ public class GameController {
         }
 
         Chatbot bot = session.getCurrentChatbot();
-        ui.getBotNameLabel().setText("Bot: " + bot.getName());
-        if (bot.isRevealed()) {
-            ui.getStatsLabel().setText("Stats:\nSTR: " + bot.getStrengthSubject() + "\nWK: " + bot.getWeaknessSubject());
-        } else {
-            ui.getStatsLabel().setText("Stats:\n[HIDDEN]");
+        ui.getBotNameLabel().setText(bot.getName() + " says:");
+        if (ui.getStatsLabel() != null) {
+            if (bot.isRevealed()) {
+                ui.getStatsLabel().setText("Stats:\nSTR: " + bot.getStrengthSubject() + "\nWK: " + bot.getWeaknessSubject());
+            } else {
+                ui.getStatsLabel().setText("Stats:\n[HIDDEN]");
+            }
         }
 
         ui.getDialogLabel().setText("Waiting...");
+
+        double progress = (double) (manager.getGlobalScore() + session.getScore()) / 14.0;
+        ui.getProgressBar().setProgress(progress);
+        ui.getProgressLabel().setText("Total Progress: " + (int)(progress * 100) + "%");
     }
 
     private void handleAnswer(int index) {

@@ -17,7 +17,7 @@ public class MainMenu {
         // Title Label
         Label title = new Label("ARE YOU SMARTER\nTHAN A CHATBOT?");
         title.setTextFill(Color.web(Theme.ACCENT_COLOR));
-        title.setFont(Theme.FONT_TITLE);
+        title.setFont(Theme.FONT_HEADER);
         title.setStyle("-fx-text-alignment: center;");
 
         // Buttons
@@ -29,7 +29,7 @@ public class MainMenu {
         // --- THE FIX IS HERE ---
         // We changed 'startGame()' to 'startNewGame()' in the Manager
         btnPlay.setOnAction(e -> manager.startNewGame());
-        btnGuide.setOnAction(e -> manager.showGuide());
+
         btnExit.setOnAction(e -> System.exit(0));
 
         // Add visuals
