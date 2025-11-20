@@ -1,10 +1,8 @@
 package ui;
 
-import logic.Chatbot;      // Import from 'logic' folder
+import logic.Chatbot;
 import logic.GameSession;
 import logic.Question;
-
-import javafx.scene.control.Alert;
 import java.util.List;
 import java.util.Random;
 
@@ -18,19 +16,30 @@ public class GameController {
         this.ui = ui;
         this.manager = manager;
         initController();
-        updateUI(); // Load first question
+        updateUI();
     }
 
     private void initController() {
-        // Bind Answer Buttons
         for (int i = 0; i < 4; i++) {
             final int index = i;
             ui.getOptionButtons()[i].setOnAction(e -> handleAnswer(index));
         }
 
-        // Bind Command Buttons
         ui.getBtnAsk().setOnAction(e -> handleAskBot());
         ui.getBtnCopy().setOnAction(e -> handleCopyPaste());
+
+        if (manager.isAskUsed()) {
+            ui.getBtnAsk().setDisable(true);
+            ui.getBtnAsk().setText("ASK USED");
+        }
+        if (manager.isCopyUsed()) {
+            ui.getBtnCopy().setDisable(true);
+            ui.getBtnCopy().setText("COPY USED");
+        }
+        if (manager.isSaveUsed()) {
+            ui.getBtnSave().setText("SAVE USED");
+            ui.getBtnSave().setStyle("-fx-text-fill: " + Theme.ERROR_COLOR + "; -fx-border-color: " + Theme.ERROR_COLOR + ";");
+        }
     }
 
     private void updateUI() {
@@ -40,7 +49,6 @@ public class GameController {
         ui.getSubjectLabel().setText("Subject: " + q.getSubject());
         ui.getQuestionLabel().setText(q.getText());
 
-        // Code Snippet Logic
         if (q.getCodeSnippet() != null && !q.getCodeSnippet().isEmpty()) {
             ui.getCodeArea().setText(q.getCodeSnippet());
             ui.getCodeArea().setVisible(true);
@@ -48,7 +56,6 @@ public class GameController {
             ui.getCodeArea().setVisible(false);
         }
 
-        // Update Buttons
         List<String> opts = q.getOptions();
         for (int i = 0; i < 4; i++) {
             if (i < opts.size()) {
@@ -60,8 +67,7 @@ public class GameController {
             }
         }
 
-        // Update Bot Stats
-        Chatbot bot = session.getCurrentChatbot(); // You might need to add this getter to logic.GameSession
+        Chatbot bot = session.getCurrentChatbot();
         ui.getBotNameLabel().setText("Bot: " + bot.getName());
         if (bot.isRevealed()) {
             ui.getStatsLabel().setText("Stats:\nSTR: " + bot.getStrengthSubject() + "\nWK: " + bot.getWeaknessSubject());
@@ -73,78 +79,58 @@ public class GameController {
     }
 
     private void handleAnswer(int index) {
-        // 1. Submit the answer to the backend logic
         GameSession.GameResult result = session.submitAnswer(index);
 
-        // 2. Handle the result
         if (result == GameSession.GameResult.CORRECT) {
-            // CASE A: Correct Answer
-            showAlert("Correct!", "Good job!");
-            checkGameStatus(); // Move to next question or finish round
-
-        } else if (result == GameSession.GameResult.SAVED_BY_CHATBOT) {
-            // CASE B: Wrong, but Saved
-            showAlert("SAVED!", "You were wrong, but " + session.getCurrentChatbot().getName() + " saved you!");
-
-            // Visual update for the Used Save button
+            // Use Custom Overlay with a callback to check status AFTER they click "Continue"
+            manager.showCustomAlert("CORRECT!", "Good job! Proceeding...", this::checkGameStatus);
+        }
+        else if (result == GameSession.GameResult.SAVED_BY_CHATBOT) {
             ui.getBtnSave().setText("SAVE USED");
-            ui.getBtnSave().setStyle("-fx-text-fill: " + Theme.ERROR_COLOR +
-                    "; -fx-border-color: " + Theme.ERROR_COLOR +
-                    "; -fx-background-color: " + Theme.BTN_BG_COLOR + ";");
+            ui.getBtnSave().setStyle("-fx-text-fill: " + Theme.ERROR_COLOR + "; -fx-border-color: " + Theme.ERROR_COLOR + ";");
 
-            checkGameStatus(); // Move to next question since they survived
-
-        } else {
-            // CASE C: Game Over (Wrong and No Save left)
-            showAlert("GAME OVER", "You threw an exception! Final Score: " + session.getScore());
-
-            // CRITICAL CHANGE: Go back to the Menu instead of closing
-            manager.showMainMenu();
+            manager.showCustomAlert("SAVED!", "You were wrong, but " + session.getCurrentChatbot().getName() + " saved you!", this::checkGameStatus);
+        }
+        else if (result == GameSession.GameResult.WRONG_AND_FAILED) {
+            manager.showCustomAlert("GAME OVER", "You were wrong!\nBot attempted to Save you, but FAILED.", manager::showMainMenu);
+        }
+        else {
+            manager.showCustomAlert("GAME OVER", "You threw an exception! Final Score: " + manager.getGlobalScore(), manager::showMainMenu);
         }
     }
 
     private void checkGameStatus() {
         if (session.isGameWon()) {
-            // Round is done!
-            showAlert("ROUND COMPLETE", "Returning to Board...");
-
-            // Get the subject of the last question to mark it complete
-            String subject = session.getCurrentQuestion().getSubject();
-
-            // Notify Manager
-            manager.finishRound(subject, session.getScore());
+            manager.showCustomAlert("ROUND COMPLETE", "Returning to Subject Board...", () ->
+                    manager.finishRound(session.getSubject(), session.getScore())
+            );
         } else {
             updateUI();
         }
     }
 
     private void handleAskBot() {
+        manager.markAskUsed();
+        ui.getBtnAsk().setDisable(true);
+        ui.getBtnAsk().setText("ASK USED");
+
         Question q = session.getCurrentQuestion();
-        Chatbot bot = session.getCurrentChatbot(); // Need this getter in logic.GameSession
+        Chatbot bot = session.getCurrentChatbot();
         boolean success = bot.calculateSuccess(q.getSubject());
 
         if (success) {
             ui.getDialogLabel().setText("I am 90% sure it is Option " + (q.getCorrectAnswerIndex() + 1));
         } else {
-            // Random wrong answer
             int wrong;
             do { wrong = new Random().nextInt(4); } while(wrong == q.getCorrectAnswerIndex());
             ui.getDialogLabel().setText("I am guessing... Option " + (wrong + 1) + "?");
         }
-        ui.getBtnAsk().setDisable(true);
     }
 
     private void handleCopyPaste() {
-        // Similar logic to AskBot but calls handleAnswer() at the end
-        // For brevity, implemented simplified:
+        manager.markCopyUsed();
+        ui.getBtnCopy().setDisable(true);
+        ui.getBtnCopy().setText("COPY USED");
         handleAskBot();
-        // In real implementation, you'd force the answer here.
-    }
-
-    private void showAlert(String title, String content) {
-        Alert a = new Alert(Alert.AlertType.INFORMATION);
-        a.setTitle(title);
-        a.setContentText(content);
-        a.showAndWait();
     }
 }

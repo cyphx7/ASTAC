@@ -5,137 +5,175 @@ import logic.Chatbot;
 import logic.GameSession;
 import logic.Question;
 
+import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
+import javafx.scene.control.Alert; // We keep this for critical errors only
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class WindowManager {
     private final Stage stage;
+    private final Scene mainScene;
+    private final StackPane rootStack; // Allows layering (Game + Overlay)
 
     // Global Game State
     private JsonDataLoader dataLoader;
-    private Map<String, List<Question>> masterQuestionBank;
     private Chatbot currentChatbot;
     private Set<String> completedSubjects;
     private int globalScore;
-    private final int QUESTIONS_PER_ROUND = 2; // [cite: 10]
+
+    // Global Command Usage
+    private boolean isAskUsed = false;
+    private boolean isCopyUsed = false;
+    private boolean isSaveUsed = false;
 
     public WindowManager(Stage stage) {
         this.stage = stage;
         this.stage.setTitle("Are You Smarter Than a Chatbot?");
-        this.stage.setMaximized(true);
+        this.stage.setFullScreenExitHint("");
 
-        // Load Data Once at Startup
+        // FIX: Use StackPane to allow overlays
+        this.rootStack = new StackPane();
+        this.mainScene = new Scene(rootStack, 1280, 720);
+
+        this.stage.setScene(mainScene);
+
         dataLoader = new JsonDataLoader();
         dataLoader.loadQuestionsFromDirectory("MCQ");
+    }
 
-        // We need a way to get ALL questions.
-        // NOTE: You might need to add a getter 'getAllQuestionsMap()' to JsonDataLoader
-        // For now, we will assume generateGameSet returns a mix and we filter,
-        // OR better: we use the loader's internal map if we expose it.
-        // SIMPLIFICATION: We will just generate a large set for now.
+    // --- NAVIGATION ---
+
+    private void setRoot(Parent content) {
+        // Clear everything and set the new content as the base layer
+        rootStack.getChildren().clear();
+        rootStack.getChildren().add(content);
+
+        stage.setFullScreen(true);
+        stage.show();
+    }
+
+    // --- NEW: CUSTOM OVERLAY ALERT ---
+    // This replaces the native "Alert" window
+    public void showCustomAlert(String title, String message, Runnable onDismiss) {
+        // 1. Semi-transparent background (dim the game)
+        Rectangle dimmer = new Rectangle(stage.getWidth(), stage.getHeight(), Color.rgb(0, 0, 0, 0.7));
+
+        // 2. The Message Box
+        VBox box = new VBox(20);
+        box.setAlignment(Pos.CENTER);
+        box.setMaxSize(500, 300);
+        box.setStyle("-fx-background-color: #222; -fx-border-color: " + Theme.ACCENT_COLOR + "; -fx-border-width: 3px; -fx-padding: 30;");
+
+        // 3. Text Content
+        Label lblTitle = new Label(title);
+        lblTitle.setFont(Theme.FONT_HEADER);
+        lblTitle.setTextFill(Color.web(Theme.ACCENT_COLOR));
+
+        Label lblMsg = new Label(message);
+        lblMsg.setFont(Theme.FONT_NORMAL);
+        lblMsg.setTextFill(Color.WHITE);
+        lblMsg.setWrapText(true);
+        lblMsg.setStyle("-fx-text-alignment: center;");
+
+        // 4. OK Button
+        Button btnOk = Theme.createStyledButton("CONTINUE");
+        btnOk.setOnAction(e -> {
+            // Remove the overlay
+            rootStack.getChildren().removeAll(dimmer, box);
+            // Run the next step (e.g., load next question)
+            if (onDismiss != null) onDismiss.run();
+        });
+
+        box.getChildren().addAll(lblTitle, lblMsg, btnOk);
+
+        // 5. Add to StackPane (on top of game)
+        rootStack.getChildren().addAll(dimmer, box);
     }
 
     public void showMainMenu() {
         MainMenu menu = new MainMenu(this);
-        setScene(new Scene(menu.getLayout(), 1280, 720));
+        setRoot(menu.getLayout());
     }
 
     public void startNewGame() {
-        // Reset State
         completedSubjects = new HashSet<>();
         globalScore = 0;
-        showChatbotSelection(); // Step 1: Pick Bot [cite: 21]
-    }
-
-    public void onChatbotSelected(Chatbot bot) {
-        this.currentChatbot = bot;
-        showSubjectSelection(); // Step 2: Pick Subject [cite: 23]
+        isAskUsed = false;
+        isCopyUsed = false;
+        isSaveUsed = false;
+        showChatbotSelection();
     }
 
     public void showChatbotSelection() {
         ChatbotSelection screen = new ChatbotSelection(this);
-        setScene(new Scene(screen.getLayout(), 1280, 720));
+        setRoot(screen.getLayout());
     }
 
     public void showSubjectSelection() {
         SubjectSelection screen = new SubjectSelection(this, completedSubjects);
-        setScene(new Scene(screen.getLayout(), 1280, 720));
+        setRoot(screen.getLayout());
+    }
+
+    public void onChatbotSelected(Chatbot bot) {
+        this.currentChatbot = bot;
+        showSubjectSelection();
     }
 
     public void onSubjectSelected(String subject) {
-        // Step 3: Start Round for this subject
         try {
-            // Get 2 random questions for this subject [cite: 10]
             List<Question> roundQuestions = getQuestionsForSubject(subject);
 
             if (roundQuestions.isEmpty()) {
-                // Dummy fallback if JSON missing
-                roundQuestions.add(new Question("Dummy Q1 for " + subject, null, Arrays.asList("A","B","C","D"), 0, subject, Question.QuestionType.THEORETICAL));
-                roundQuestions.add(new Question("Dummy Q2 for " + subject, null, Arrays.asList("A","B","C","D"), 0, subject, Question.QuestionType.THEORETICAL));
+                roundQuestions.add(new Question("Dummy Q1 (" + subject + ")", null, Arrays.asList("A","B","C","D"), 0, subject, Question.QuestionType.THEORETICAL));
+                roundQuestions.add(new Question("Dummy Q2 (" + subject + ")", null, Arrays.asList("A","B","C","D"), 0, subject, Question.QuestionType.THEORETICAL));
             }
 
-            GameSession roundSession = new GameSession(currentChatbot, roundQuestions);
-
-            // Reveal stats now [cite: 24]
+            GameSession roundSession = new GameSession(currentChatbot, roundQuestions, this);
             currentChatbot.revealStats();
 
             GameUI gameView = new GameUI();
-            // Pass 'this' so controller can call back when round ends
             new GameController(roundSession, gameView, this);
 
-            setScene(new Scene(gameView.getRoot(), 1280, 720));
+            setRoot(gameView.getRoot());
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void onRoundComplete(int roundScore) {
-        globalScore += roundScore;
-
-        // Mark current subject as done
-        Question q = dataLoader.generateGameSet().get(0); // Just to get current subject safely?
-        // Better: We track it in the loop.
-        // Since we don't have the subject string passed back easily,
-        // we rely on the GameController handling the logic or we assume the selected one.
-        // IMPROVEMENT: Let's rely on completedSubjects being updated by the selection logic
-        // OR simply mark the subject passed in 'onSubjectSelected' as done.
-    }
-
-    // Helper to handle round end from Controller
     public void finishRound(String subject, int score) {
         globalScore += score;
-        completedSubjects.add(subject); // [cite: 13]
+        completedSubjects.add(subject);
 
         if (completedSubjects.size() >= 7) {
-            // Win Condition [cite: 34]
-            Alert win = new Alert(Alert.AlertType.INFORMATION);
-            win.setTitle("VICTORY");
-            win.setHeaderText("You are Smarter Than a Chatbot!");
-            win.setContentText("Final Score: " + globalScore + "/14");
-            win.showAndWait();
-            showMainMenu();
+            // Use Custom Alert for Victory too!
+            showCustomAlert("VICTORY", "You are Smarter Than a Chatbot!\nFinal Score: " + globalScore + "/14", this::showMainMenu);
         } else {
-            // Go back to board [cite: 27]
             showSubjectSelection();
         }
     }
 
-    private void setScene(Scene scene) {
-        stage.setScene(scene);
-        stage.setFullScreen(true);
-    }
+    // Global State Getters
+    public boolean isAskUsed() { return isAskUsed; }
+    public void markAskUsed() { this.isAskUsed = true; }
+    public boolean isCopyUsed() { return isCopyUsed; }
+    public void markCopyUsed() { this.isCopyUsed = true; }
+    public boolean isSaveUsed() { return isSaveUsed; }
+    public void markSaveUsed() { this.isSaveUsed = true; }
+    public int getGlobalScore() { return globalScore; }
 
-    // Helper to filter questions (You might need to adjust JsonDataLoader for this)
     private List<Question> getQuestionsForSubject(String subject) {
-        // This relies on your JsonDataLoader having questions loaded.
-        // Since we can't edit JsonDataLoader right now, we will generate a set and filter.
-        List<Question> all = dataLoader.generateGameSet(); // This gets 14 random ones.
-        // Real implementation: JsonDataLoader should have a 'getQuestions(subject)' method.
-        // For now, we filter the random set or create dummies.
+        List<Question> all = dataLoader.generateGameSet();
         return all.stream()
                 .filter(q -> q.getSubject().equalsIgnoreCase(subject))
                 .limit(2)

@@ -1,83 +1,84 @@
 package logic;
 
+import ui.WindowManager;
 import java.util.List;
 
 public class GameSession {
-    private int score;
-    private int questionsAnswered;
-    private boolean saveCommandUsed;
-    private Chatbot currentChatbot;
-    private List<Question> gameQuestions; // The 14 selected questions
+    private final Chatbot currentChatbot;
+    private final List<Question> questions;
+    private final WindowManager manager;
     private int currentQuestionIndex;
-
-    public GameSession(Chatbot startingChatbot, List<Question> selectedQuestions) {
-        this.currentChatbot = startingChatbot;
-        this.gameQuestions = selectedQuestions;
-        this.score = 0;
-        this.questionsAnswered = 0;
-        this.currentQuestionIndex = 0;
-        this.saveCommandUsed = false;
-    }
-
-    public Question getCurrentQuestion() {
-        if (currentQuestionIndex >= gameQuestions.size()) return null;
-        return gameQuestions.get(currentQuestionIndex);
-    }
-
-    // Returns true if game should continue, false if Game Over
-    public GameResult submitAnswer(int playerAnswerIndex) {
-        Question currentQ = getCurrentQuestion();
-
-        // 1. Check if Player is Correct
-        if (playerAnswerIndex == currentQ.getCorrectAnswerIndex()) {
-            score++; // Logic: Score increases on correct answer
-            advanceToNextQuestion();
-            return GameResult.CORRECT;
-        }
-
-        // 2. Player is Wrong - Check for Save Command
-        if (!saveCommandUsed) {
-            saveCommandUsed = true; // Mark as used
-
-            // Ask logic.Chatbot internally
-            boolean chatbotSuccess = currentChatbot.calculateSuccess(currentQ.getSubject());
-
-            if (chatbotSuccess) {
-                // logic.Chatbot saved the player!
-                // Logic: Player survives, but NO points awarded.
-                advanceToNextQuestion();
-                return GameResult.SAVED_BY_CHATBOT;
-            } else {
-                // logic.Chatbot failed too
-                return GameResult.GAME_OVER;
-            }
-        }
-
-        // 3. Wrong and Save already used
-        return GameResult.GAME_OVER;
-    }
-
-    private void advanceToNextQuestion() {
-        currentQuestionIndex++;
-        questionsAnswered++;
-    }
-
-    public boolean isGameWon() {
-        // Win logic: Finished all 14 questions
-        return currentQuestionIndex >= 14;
-    }
-
-    public int getScore() { return score; }
-    public int getQuestionsAnswered() { return questionsAnswered; }
+    private int score;
 
     public enum GameResult {
         CORRECT,
-        SAVED_BY_CHATBOT,
-        GAME_OVER
+        WRONG_AND_FAILED,   // New: Bot tried to save but failed
+        SAVED_BY_CHATBOT,   // Bot tried and succeeded
+        GAME_OVER           // No save available
     }
 
-    // Add this to logic.GameSession.java
+    public GameSession(Chatbot chatbot, List<Question> questions, WindowManager manager) {
+        this.currentChatbot = chatbot;
+        this.questions = questions;
+        this.manager = manager;
+        this.currentQuestionIndex = 0;
+        this.score = 0;
+    }
+
+    public Question getCurrentQuestion() {
+        if (currentQuestionIndex < questions.size()) {
+            return questions.get(currentQuestionIndex);
+        }
+        return null;
+    }
+
+    // FIX 1: Safe way to get subject even if round is over
+    public String getSubject() {
+        if (!questions.isEmpty()) {
+            return questions.get(0).getSubject();
+        }
+        return "Unknown";
+    }
+
     public Chatbot getCurrentChatbot() {
-        return this.currentChatbot;
+        return currentChatbot;
+    }
+
+    public GameResult submitAnswer(int answerIndex) {
+        Question q = getCurrentQuestion();
+        if (q == null) return GameResult.GAME_OVER;
+
+        if (answerIndex == q.getCorrectAnswerIndex()) {
+            score++;
+            currentQuestionIndex++;
+            return GameResult.CORRECT;
+        } else {
+            // WRONG ANSWER LOGIC
+
+            if (!manager.isSaveUsed()) {
+                manager.markSaveUsed(); // Mark it as used globally
+
+                boolean saved = currentChatbot.calculateSuccess(q.getSubject());
+
+                if (saved) {
+                    currentQuestionIndex++; // Saved! Move on.
+                    return GameResult.SAVED_BY_CHATBOT;
+                } else {
+                    // FIX 2: Bot tried but failed (Different from generic Game Over)
+                    return GameResult.WRONG_AND_FAILED;
+                }
+            } else {
+                // No save left at all
+                return GameResult.GAME_OVER;
+            }
+        }
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public boolean isGameWon() {
+        return currentQuestionIndex >= questions.size();
     }
 }
