@@ -1,13 +1,11 @@
 package ui;
 
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import java.util.List;
 import java.util.Set;
 
 public class SubjectSelection {
@@ -16,8 +14,13 @@ public class SubjectSelection {
 
     // You can customize these subject names to match your JSON files
     private final String[] subjects = {
-            "VARIABLES", "LOOPS", "ARRAYS",
-            "FUNCTIONS", "CLASSES", "SYNTAX", "LOGIC"
+            "INTRO",           // Intro to Paradigms
+            "PROCEDURAL",      // Procedural Programming
+            "FUNCTIONAL",      // Functional Programming
+            "OOP",             // Object-Oriented Programming
+            "IMP_DEC",         // Imperative vs Declarative
+            "EVENT_DRIVEN",    // Event-Driven Programming
+            "MAPPINGS"         // Component Mappings
     };
 
     public SubjectSelection(WindowManager manager, Set<String> completedSubjects) {

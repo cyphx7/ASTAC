@@ -1,0 +1,79 @@
+[
+  {
+    "text": "Python: Output of list slice [1:3] on [10, 20, 30, 40, 50].",
+    "options": ["10, 20, 30", "[20, 30]", "20, 30, 40", "10, 20"],
+    "correctAnswerIndex": 1,
+    "subject": "IMP_DEC",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "Python: Access dict['age'].",
+    "options": ["Alice", "age", "25", "KeyError"],
+    "correctAnswerIndex": 2,
+    "subject": "IMP_DEC",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "Python: Loop range(1, 4).",
+    "options": ["1 2 3 4", "0 1 2 3", "1 2 3", "1 4"],
+    "correctAnswerIndex": 2,
+    "subject": "IMP_DEC",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "Python: Output of Car class code (OOP but basic).",
+    "options": ["color", "self.color", "Red", "Error"],
+    "correctAnswerIndex": 2,
+    "subject": "IMP_DEC",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "Python: Define function greet.",
+    "options": ["function greet", "def greet(name)", "def greet(name):", "def greet[name]"],
+    "correctAnswerIndex": 2,
+    "subject": "IMP_DEC",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "Python: Print characters of 'Hi' on new lines.",
+    "options": ["print 'H\\ni'", "for c in 'Hi': print(c)", "print 'H', 'i'", "A and B"],
+    "correctAnswerIndex": 3,
+    "subject": "IMP_DEC",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "Python: Import math module.",
+    "options": ["include math", "import math", "require", "using"],
+    "correctAnswerIndex": 1,
+    "subject": "IMP_DEC",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "Python: Create dictionary.",
+    "options": ["[]", "()", "{\"fruit\": \"Apple\"}", "="],
+    "correctAnswerIndex": 2,
+    "subject": "IMP_DEC",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "Python: If statement syntax.",
+    "options": ["then", "{", ":", "()"],
+    "correctAnswerIndex": 2,
+    "subject": "IMP_DEC",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "Python: Constructor name.",
+    "options": ["init", "constructor", "__init__", "new"],
+    "correctAnswerIndex": 2,
+    "subject": "IMP_DEC",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "Python: Assign parameter to attribute.",
+    "options": ["name", "self.name", "this.name", "Person.name"],
+    "correctAnswerIndex": 1,
+    "subject": "IMP_DEC",
+    "type": "PROGRAMMING"
+  }
+]

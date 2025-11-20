@@ -1,0 +1,177 @@
+[
+  {
+    "text": "Output of: String s1=\"Hello\"; String s2=new String(\"Hello\"); System.out.println(s1==s2);",
+    "options": ["TRUE", "FALSE", "Error", "Hello"],
+    "correctAnswerIndex": 1,
+    "subject": "OOP",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "Output of: s1.equals(s2)",
+    "options": ["TRUE", "FALSE", "Error", "Hello"],
+    "correctAnswerIndex": 0,
+    "subject": "OOP",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "Output of: d.bark() where Dog extends Animal.",
+    "options": ["d.bark()", "No output", "Error", "Woof"],
+    "correctAnswerIndex": 3,
+    "subject": "OOP",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "Output of constructor: Person p = new Person(\"Ada\"); prints \"Person created: \" + name",
+    "options": ["Person created: Ada", "Ada", "No output", "Error"],
+    "correctAnswerIndex": 0,
+    "subject": "OOP",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "ArrayList output after adding A, B, C and remove(1).",
+    "options": ["A, B, C", "[A, C]", "B, C", "A, B"],
+    "correctAnswerIndex": 1,
+    "subject": "OOP",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "Exception handling output: try 10/0 (A), catch (B), finally (C).",
+    "options": ["AC", "ABC", "BC", "B"],
+    "correctAnswerIndex": 2,
+    "subject": "OOP",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "Loop with break at 4. Prints:",
+    "options": ["0 1 2 3 4", "0 1 2 3 5...", "0 1 2 3", "0 1 2"],
+    "correctAnswerIndex": 2,
+    "subject": "OOP",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "Static vs Instance count output for 2 objects.",
+    "options": ["1 1", "1 2", "2 1", "2 2"],
+    "correctAnswerIndex": 1,
+    "subject": "OOP",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "Constructor chaining output: new Dog() (extends Animal).",
+    "options": ["Dog", "Animal", "Animal Dog", "Dog Animal"],
+    "correctAnswerIndex": 2,
+    "subject": "OOP",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "Print 'Hello World' in Java.",
+    "options": ["System.out.println(\" World\")", "printf", "System.out.println(\"Hello World\")", "console.log"],
+    "correctAnswerIndex": 2,
+    "subject": "OOP",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "Car inherits from Vehicle syntax.",
+    "options": ["imports", "extends", "implements", ":"],
+    "correctAnswerIndex": 1,
+    "subject": "OOP",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "Iterate array 'letters' and print.",
+    "options": ["for loop with index", "for-each loop", "sysout(letters)", "A and B correct"],
+    "correctAnswerIndex": 3,
+    "subject": "OOP",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "Define interface Shape.",
+    "options": ["abstract class", "public interface Shape { void draw(); }", "virtual", "default"],
+    "correctAnswerIndex": 1,
+    "subject": "OOP",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "Catch NullPointerException.",
+    "options": ["catch(Exception)", "catch(NullPointerException e)", "catch(IOException)", "finally"],
+    "correctAnswerIndex": 1,
+    "subject": "OOP",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "Create HashMap for names (String) and grades (Integer).",
+    "options": ["Map<String, Integer>", "HashMap<String, Integer>", "Map<String, int>", "A and B"],
+    "correctAnswerIndex": 3,
+    "subject": "OOP",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "Get characters in String s.",
+    "options": ["s.length()", "s.length", "s.size()", "s.count()"],
+    "correctAnswerIndex": 0,
+    "subject": "OOP",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "Check content equality of strings.",
+    "options": ["==", "s1.equals(s2)", "compareTo", "B and C"],
+    "correctAnswerIndex": 3,
+    "subject": "OOP",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "Define a class Dog.",
+    "options": ["class", "interface", "object", "struct"],
+    "correctAnswerIndex": 0,
+    "subject": "OOP",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "Define constructor for Person.",
+    "options": ["void", "Person", "String", "Factory"],
+    "correctAnswerIndex": 1,
+    "subject": "OOP",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "Call superclass constructor.",
+    "options": ["this(name)", "Animal(name)", "super(name)", "super.Animal"],
+    "correctAnswerIndex": 2,
+    "subject": "OOP",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "Implement interface Runnable.",
+    "options": ["extends", "implements", "uses", "inherits"],
+    "correctAnswerIndex": 1,
+    "subject": "OOP",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "Compare int value x to 10.",
+    "options": ["equals", "is", "==", "="],
+    "correctAnswerIndex": 2,
+    "subject": "OOP",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "Getter method for name.",
+    "options": ["return name", "return this.name", "sysout", "A and B"],
+    "correctAnswerIndex": 3,
+    "subject": "OOP",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "Keyword for exception handling block.",
+    "options": ["except", "when", "catch", "finally"],
+    "correctAnswerIndex": 2,
+    "subject": "OOP",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "Import ArrayList.",
+    "options": ["import java.ArrayList", "include", "import java.util.ArrayList", "import util"],
+    "correctAnswerIndex": 2,
+    "subject": "OOP",
+    "type": "PROGRAMMING"
+  }
+]

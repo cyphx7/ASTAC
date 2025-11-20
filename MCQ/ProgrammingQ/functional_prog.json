@@ -1,0 +1,37 @@
+[
+  {
+    "text": "Python: Create list of squares [1, 4, 9, 16].",
+    "options": ["squares = [n * 2 ...]", "squares = [n * n for n in nums]", "squares = [n ... if n*n]", "dict"],
+    "correctAnswerIndex": 1,
+    "subject": "FUNCTIONAL",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "Python: Filter to keep even numbers.",
+    "options": ["x % 2 == 0", "x % 2 == 1", "x", "return x"],
+    "correctAnswerIndex": 0,
+    "subject": "FUNCTIONAL",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "Python: Output of greet(name='World').",
+    "options": ["Hello, name", "Hello, World", "Hello,", "Error"],
+    "correctAnswerIndex": 1,
+    "subject": "FUNCTIONAL",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "JS: Double numbers using map.",
+    "options": ["nums.map(n => n * 2)", "filter", "forEach", "reduce"],
+    "correctAnswerIndex": 0,
+    "subject": "FUNCTIONAL",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "JS: Define fat arrow function add.",
+    "options": ["(a,b) => {a+b}", "(a,b) => a+b", "function =>", "(a+b)"],
+    "correctAnswerIndex": 1,
+    "subject": "FUNCTIONAL",
+    "type": "PROGRAMMING"
+  }
+]
