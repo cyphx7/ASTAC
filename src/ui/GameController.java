@@ -6,6 +6,10 @@ import logic.Question;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Controls game logic and UI interactions during gameplay.
+ * Handles answer submission, chatbot commands, and game state updates.
+ */
 public class GameController {
     private final GameSession session;
     private final GameUI ui;
@@ -97,7 +101,7 @@ public class GameController {
             manager.showCustomAlert("SAVED!", "You were wrong, but " + session.getCurrentChatbot().getName() + " saved you!", this::checkGameStatus);
         }
         else if (result == GameSession.GameResult.WRONG_AND_FAILED) {
-            // --- GAME OVER CASE 1 (Failed Save) ---
+
             int totalScore = manager.getGlobalScore() + session.getScore();
             int percent = (int) ((totalScore / 14.0) * 100);
 
@@ -105,7 +109,7 @@ public class GameController {
             manager.showCustomAlert("GAME OVER", msg, manager::showMainMenu);
         }
         else {
-            // --- GAME OVER CASE 2 (No Save Left) ---
+
             int totalScore = manager.getGlobalScore() + session.getScore();
             int percent = (int) ((totalScore / 14.0) * 100);
 

@@ -3,6 +3,10 @@ package logic;
 import ui.WindowManager;
 import java.util.List;
 
+/**
+ * Manages a single game round with questions from one subject.
+ * Handles answer submission, chatbot saves, and game state tracking.
+ */
 public class GameSession {
     private final Chatbot currentChatbot;
     private final List<Question> questions;
@@ -12,9 +16,9 @@ public class GameSession {
 
     public enum GameResult {
         CORRECT,
-        WRONG_AND_FAILED,   // New: Bot tried to save but failed
+        WRONG_AND_FAILED,   // Bot tried to save but failed
         SAVED_BY_CHATBOT,   // Bot tried and succeeded
-        GAME_OVER           // No save available
+        GAME_OVER   
     }
 
     public GameSession(Chatbot chatbot, List<Question> questions, WindowManager manager) {
@@ -32,7 +36,7 @@ public class GameSession {
         return null;
     }
 
-    // FIX 1: Safe way to get subject even if round is over
+
     public String getSubject() {
         if (!questions.isEmpty()) {
             return questions.get(0).getSubject();
@@ -53,7 +57,7 @@ public class GameSession {
             currentQuestionIndex++;
             return GameResult.CORRECT;
         } else {
-            // WRONG ANSWER LOGIC
+
 
             if (!manager.isSaveUsed()) {
                 manager.markSaveUsed(); // Mark it as used globally
@@ -64,7 +68,7 @@ public class GameSession {
                     currentQuestionIndex++; // Saved! Move on.
                     return GameResult.SAVED_BY_CHATBOT;
                 } else {
-                    // FIX 2: Bot tried but failed (Different from generic Game Over)
+
                     return GameResult.WRONG_AND_FAILED;
                 }
             } else {

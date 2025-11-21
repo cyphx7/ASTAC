@@ -19,18 +19,22 @@ import javafx.stage.Stage;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Central manager for window navigation and game state.
+ * Handles scene transitions, global game state, and command usage tracking.
+ */
 public class WindowManager {
     private final Stage stage;
     private final Scene mainScene;
     private final StackPane rootStack;
 
-    // Global Game State
+
     private JsonDataLoader dataLoader;
     private Chatbot currentChatbot;
     private Set<String> completedSubjects;
     private int globalScore;
 
-    // Global Command Usage
+
     private boolean isAskUsed = false;
     private boolean isCopyUsed = false;
     private boolean isSaveUsed = false;
@@ -49,7 +53,7 @@ public class WindowManager {
         dataLoader.loadQuestionsFromDirectory("MCQ");
     }
 
-    // --- NAVIGATION ---
+
 
     private void setRoot(Parent content) {
         rootStack.getChildren().clear();
@@ -91,9 +95,9 @@ public class WindowManager {
         setRoot(menu.getLayout());
     }
 
-    // Added method for Guide if you implement GuideScreen later
+
     public void showGuide() {
-        // If you haven't created GuideScreen.java yet, create it or comment this out
+
         GuideScreen screen = new GuideScreen(this);
         setRoot(screen.getLayout());
     }
@@ -149,7 +153,7 @@ public class WindowManager {
         completedSubjects.add(subject);
 
         if (completedSubjects.size() >= 7) {
-            // UPDATED: Percentage Calculation Logic
+
             int percent = (int) ((globalScore / 14.0) * 100);
 
             String msg = "Final Score: " + globalScore + "/14 (" + percent + "%)\n";
@@ -162,7 +166,7 @@ public class WindowManager {
         }
     }
 
-    // Global State Getters
+
     public boolean isAskUsed() { return isAskUsed; }
     public void markAskUsed() { this.isAskUsed = true; }
     public boolean isCopyUsed() { return isCopyUsed; }

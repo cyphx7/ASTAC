@@ -7,6 +7,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 
+/**
+ * Displays game rules and mechanics to help players understand the game.
+ */
 public class GuideScreen {
     private final VBox layout;
 

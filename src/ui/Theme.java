@@ -9,14 +9,18 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
+/**
+ * Centralized theme and styling utilities for the cyberpunk-themed UI.
+ * Provides consistent colors, fonts, and button styling across the application.
+ */
 public class Theme {
-    // --- Cyberpunk Color Palette ---
+
     public static final String BG_COLOR = "#0d0d0d";       // Almost Black (Main Background)
     public static final String PRIMARY_COLOR = "#1a1a1a";  // Dark Grey (Panels)
     public static final String ACCENT_COLOR = "#00e5ff";   // Neon Cyan (Text/Borders)
     public static final String ERROR_COLOR = "#ff3333";    // Neon Red (Errors/Warnings)
 
-    // --- Fonts ---
+
     public static final Font FONT_HEADER = Font.font("Consolas", FontWeight.BOLD, 28);
     public static final Font FONT_NORMAL = Font.font("Consolas", FontWeight.NORMAL, 16);
 
@@ -33,7 +37,7 @@ public class Theme {
         btn.setStyle("-fx-border-color: " + ACCENT_COLOR + "; -fx-border-width: 1px;");
         btn.setPadding(new Insets(10, 20, 10, 20));
 
-        // Hover Effects
+
         btn.setOnMouseEntered(e -> {
             btn.setBackground(new Background(new BackgroundFill(Color.web(ACCENT_COLOR), new CornerRadii(5), Insets.EMPTY)));
             btn.setTextFill(Color.BLACK);

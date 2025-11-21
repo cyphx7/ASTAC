@@ -2,6 +2,10 @@ package logic;
 
 import java.util.List;
 
+/**
+ * Represents a programming question with multiple choice options.
+ * Supports both theoretical questions and code-based questions.
+ */
 public class Question {
     private String text;
     private String codeSnippet; // Can be null if it's a theoretical question

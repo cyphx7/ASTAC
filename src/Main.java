@@ -1,12 +1,16 @@
 import javafx.application.Application;
 import javafx.stage.Stage;
 import ui.WindowManager;
+/**
+ * Main entry point for the "Are You Smarter Than a ChatBot?" game.
+ * A JavaFX application where players compete against AI chatbots in programming knowledge.
+ */
 
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         WindowManager windowManager = new WindowManager(primaryStage);
-        windowManager.showMainMenu(); // Start at the menu
+        windowManager.showMainMenu();
         primaryStage.show();
     }
 

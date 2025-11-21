@@ -2,6 +2,10 @@ package logic;
 
 import java.util.Random;
 
+/**
+ * Represents an AI chatbot with subject-specific strengths and weaknesses.
+ * Each chatbot has different success rates based on the question subject.
+ */
 public class Chatbot {
     private String name;
     private String strengthSubject;

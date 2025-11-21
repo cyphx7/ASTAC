@@ -13,9 +13,13 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Stream;
 
+/**
+ * Loads programming questions from JSON files and manages the question bank.
+ * Supports generating randomized game sets with balanced subject distribution.
+ */
 public class JsonDataLoader {
 
-    // Holds all questions found in files, grouped by Subject
+    /** Holds all questions found in files, grouped by subject */
     private Map<String, List<Question>> questionBank = new HashMap<>();
 
     public void loadQuestionsFromDirectory(String rootDirectoryPath) {

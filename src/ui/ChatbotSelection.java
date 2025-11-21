@@ -10,6 +10,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import logic.Chatbot;
 
+/**
+ * Screen for selecting an AI chatbot assistant with unique strengths and weaknesses.
+ */
 public class ChatbotSelection {
     private final VBox layout;
     private final WindowManager manager;
@@ -57,17 +60,17 @@ public class ChatbotSelection {
         nameLabel.setTextFill(Color.WHITE);
         nameLabel.setFont(Theme.FONT_NORMAL);
 
-        // We still calculate stats here so the Bot object is created correctly...
+
         String[] stats = assignStats(name);
-        // ...BUT we do NOT display them to the user yet. (Hidden as per proposal)
+
 
         Button btnSelect = Theme.createStyledButton("SELECT");
         btnSelect.setOnAction(e -> {
-            // Create the specific bot with its unique stats
+
             Chatbot selectedBot = new Chatbot(name, stats[0], stats[1]);
 
-            // Pass it to manager.
-            // Note: Manager will call bot.revealStats() ONLY after Subject Selection.
+
+
             manager.onChatbotSelected(selectedBot);
         });
 
@@ -75,7 +78,7 @@ public class ChatbotSelection {
         return card;
     }
 
-    // Unique Personalities (Hidden until game start)
+
     private String[] assignStats(String name) {
         switch (name) {
             case "CHATGPT":  return new String[]{"INTRO", "MAPPINGS"};

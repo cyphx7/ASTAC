@@ -14,25 +14,28 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 
+/**
+ * Main game interface displaying questions, options, and chatbot interactions.
+ */
 public class GameUI {
     private final BorderPane root;
 
-    // Top Elements
+
     private Label subjectLabel;
     private Rectangle botAvatar;
 
-    // Center Elements (Now includes Question)
+
     private Label questionLabel;
     private TextArea codeArea;
     private Button[] optionButtons;
 
-    // Bottom Elements
+
     private Label dialogLabel;
     private Label botNameLabelBottom;
     private ProgressBar progressBar;
     private Label progressLabel;
 
-    // Command Buttons
+
     private Button btnAsk;
     private Button btnCopy;
     private Button btnSave;
@@ -52,7 +55,7 @@ public class GameUI {
         BorderPane topContainer = new BorderPane();
         topContainer.setPadding(new Insets(20));
 
-        // --- LEFT: Chatbot Icon ---
+
         VBox topLeft = new VBox(10);
         topLeft.setAlignment(Pos.TOP_LEFT);
 
@@ -62,11 +65,11 @@ public class GameUI {
 
         topLeft.getChildren().addAll(botAvatar);
 
-        // --- RIGHT: Tools & Subject ---
+
         VBox topRight = new VBox(10);
         topRight.setAlignment(Pos.TOP_RIGHT);
 
-        // 1. Tools
+
         HBox toolsBox = new HBox(5);
         toolsBox.setAlignment(Pos.CENTER_RIGHT);
 
@@ -87,7 +90,7 @@ public class GameUI {
 
         toolsBox.getChildren().addAll(btnAsk, btnCopy, btnSave);
 
-        // 2. Subject Label
+
         subjectLabel = new Label("Subject: LOADING...");
         subjectLabel.setFont(Theme.FONT_NORMAL);
         subjectLabel.setTextFill(Color.WHITE);
@@ -95,7 +98,7 @@ public class GameUI {
         topRight.getChildren().addAll(toolsBox, subjectLabel);
 
         topContainer.setLeft(topLeft);
-        // Removed Center from Top Panel (Question Box Moved)
+
         topContainer.setRight(topRight);
 
         root.setTop(topContainer);
@@ -107,7 +110,7 @@ public class GameUI {
         centerContainer.setAlignment(Pos.TOP_CENTER);
         centerContainer.setPadding(new Insets(10, 40, 20, 40));
 
-        // --- 1. QUESTION BOX (Moved here) ---
+
         VBox questionBox = new VBox(15);
         questionBox.setAlignment(Pos.TOP_CENTER);
         questionBox.setMaxWidth(800);
@@ -129,7 +132,7 @@ public class GameUI {
 
         questionBox.getChildren().addAll(questionLabel, codeArea);
 
-        // --- 2. OPTIONS GRID ---
+
         GridPane optionsGrid = new GridPane();
         optionsGrid.setAlignment(Pos.CENTER);
         optionsGrid.setHgap(20);
@@ -157,7 +160,7 @@ public class GameUI {
         bottomContainer.setPadding(new Insets(20));
         bottomContainer.setStyle("-fx-border-color: " + Theme.ACCENT_COLOR + "; -fx-border-width: 2px 0 0 0; -fx-background-color: #111;");
 
-        // --- LEFT: Dialogue Box ---
+
         VBox dialogueBox = new VBox(5);
         dialogueBox.setAlignment(Pos.CENTER_LEFT);
         dialogueBox.setMaxWidth(800);
@@ -173,7 +176,7 @@ public class GameUI {
 
         dialogueBox.getChildren().addAll(botNameLabelBottom, dialogLabel);
 
-        // --- RIGHT: Progress Bar ---
+
         VBox progressBox = new VBox(5);
         progressBox.setAlignment(Pos.CENTER_RIGHT);
         progressBox.setPrefWidth(300);
@@ -194,7 +197,7 @@ public class GameUI {
         root.setBottom(bottomContainer);
     }
 
-    // Getters
+
     public Label getSubjectLabel() { return subjectLabel; }
     public Label getQuestionLabel() { return questionLabel; }
     public TextArea getCodeArea() { return codeArea; }

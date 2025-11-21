@@ -1,11 +1,14 @@
-package ui; // Make sure this is at the top!
+package ui;
 
-import javafx.geometry.Pos; // Added this import to fix 'Pos' error
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
+/**
+ * Main menu screen with navigation options for the game.
+ */
 public class MainMenu {
     private final VBox layout;
 
@@ -26,10 +29,10 @@ public class MainMenu {
         Button btnSettings = Theme.createStyledButton("SETTINGS");
         Button btnExit = Theme.createStyledButton("EXIT");
 
-        // --- THE FIX IS HERE ---
-        // We changed 'startGame()' to 'startNewGame()' in the Manager
-        btnPlay.setOnAction(e -> manager.startNewGame());
 
+
+        btnPlay.setOnAction(e -> manager.startNewGame());
+        btnGuide.setOnAction(e -> manager.showGuide());
         btnExit.setOnAction(e -> System.exit(0));
 
         // Add visuals

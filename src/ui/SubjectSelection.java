@@ -8,11 +8,15 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import java.util.Set;
 
+/**
+ * Subject selection screen showing available programming topics.
+ * Completed subjects are disabled and marked as done.
+ */
 public class SubjectSelection {
     private final VBox layout;
     private final WindowManager manager;
 
-    // You can customize these subject names to match your JSON files
+
     private final String[] subjects = {
             "INTRO",           // Intro to Paradigms
             "PROCEDURAL",      // Procedural Programming
@@ -45,7 +49,7 @@ public class SubjectSelection {
             Button btn = Theme.createStyledButton(subjectName);
             btn.setPrefSize(200, 60);
 
-            // Logic: Disable if already completed [cite: 13]
+
             if (completedSubjects.contains(subjectName)) {
                 btn.setDisable(true);
                 btn.setText(subjectName + " (DONE)");
@@ -54,7 +58,7 @@ public class SubjectSelection {
                 btn.setOnAction(e -> manager.onSubjectSelected(subjectName));
             }
 
-            // Layout: 3 columns
+
             grid.add(btn, i % 3, i / 3);
         }
 
