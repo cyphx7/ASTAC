@@ -83,7 +83,12 @@ public class GameController {
             }
         }
 
-        ui.getDialogLabel().setText("Waiting...");
+        String introMsg = bot.isRevealed()
+                ? String.format("Hey! I am good at %s but bad at %s.",
+                    bot.getStrengthSubject(),
+                    bot.getWeaknessSubject())
+                : "Waiting...";
+        ui.getDialogLabel().setText(introMsg);
 
         double progress = (double) (manager.getGlobalScore() + session.getScore()) / 14.0;
         ui.getProgressBar().setProgress(progress);
