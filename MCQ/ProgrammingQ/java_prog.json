@@ -4,7 +4,7 @@
     "codeSnippet": "String s1 = \"Hello\";\nString s2 = new String(\"Hello\");\nSystem.out.println(s1 == s2);",
     "options": ["TRUE", "FALSE", "(Compilation Error)", "Hello"],
     "correctAnswerIndex": 1,
-    "subject": "JAVA",
+    "subject": "OOP",
     "type": "PROGRAMMING"
   },
   {
@@ -12,7 +12,7 @@
     "codeSnippet": "String s1 = \"Hello\";\nString s2 = new String(\"Hello\");\nSystem.out.println(s1.equals(s2));",
     "options": ["TRUE", "FALSE", "(Compilation Error)", "Hello"],
     "correctAnswerIndex": 0,
-    "subject": "JAVA",
+    "subject": "OOP",
     "type": "PROGRAMMING"
   },
   {
@@ -20,7 +20,7 @@
     "codeSnippet": "class Dog {\n    public void bark() {\n        System.out.print(\"Woof\");\n    }\n}\n// In main:\nDog d = new Dog();\nd.bark();",
     "options": ["(No output)", "(Compilation Error)", "Woof", "d.bark()"],
     "correctAnswerIndex": 2,
-    "subject": "JAVA",
+    "subject": "OOP",
     "type": "PROGRAMMING"
   },
   {
@@ -28,7 +28,7 @@
     "codeSnippet": "class Person {\n    String name;\n    Person(String name) {\n        this.name = name;\n        System.out.print(\"Person created: \" + this.name);\n    }\n}\n// In main:\nPerson p = new Person(\"Ada\");",
     "options": ["Person created: Ada", "Ada", "(No output)", "(Compilation Error)"],
     "correctAnswerIndex": 0,
-    "subject": "JAVA",
+    "subject": "OOP",
     "type": "PROGRAMMING"
   },
   {
@@ -36,7 +36,7 @@
     "codeSnippet": "ArrayList<String> list = new ArrayList<>();\nlist.add(\"A\");\nlist.add(\"B\");\nlist.add(\"C\");\nlist.remove(1);\nSystem.out.println(list);",
     "options": ["A, B, C", "[A, C]", "B, C", "A, B"],
     "correctAnswerIndex": 1,
-    "subject": "JAVA",
+    "subject": "OOP",
     "type": "PROGRAMMING"
   },
   {
@@ -44,7 +44,7 @@
     "codeSnippet": "try {\n    int x = 10 / 0;\n    System.out.print(\"A\");\n} catch (ArithmeticException e) {\n    System.out.print(\"B\");\n} finally {\n    System.out.print(\"C\");\n}",
     "options": ["AC", "ABC", "BC", "B"],
     "correctAnswerIndex": 2,
-    "subject": "JAVA",
+    "subject": "OOP",
     "type": "PROGRAMMING"
   },
   {
@@ -52,7 +52,7 @@
     "codeSnippet": "for (int i = 0; i < 10; i++) {\n    if (i == 4) break;\n    System.out.print(i + \" \");\n}",
     "options": ["0 1 2 3 4", "0 1 2 3 5 6 7 8 9", "0 1 2 3", "0 1 2"],
     "correctAnswerIndex": 2,
-    "subject": "JAVA",
+    "subject": "OOP",
     "type": "PROGRAMMING"
   },
   {
@@ -60,7 +60,7 @@
     "codeSnippet": "class Counter {\n    static int staticCount = 0;\n    int instanceCount = 0;\n    Counter() {\n        staticCount++;\n        instanceCount++;\n    }\n}\n// In main:\nCounter c1 = new Counter();\nCounter c2 = new Counter();\nSystem.out.println(c2.instanceCount + \" \" + Counter.staticCount);",
     "options": ["1 1", "1 2", "2 1", "2 2"],
     "correctAnswerIndex": 1,
-    "subject": "JAVA",
+    "subject": "OOP",
     "type": "PROGRAMMING"
   },
   {
@@ -68,63 +68,63 @@
     "codeSnippet": "class Animal {\n    Animal() { System.out.print(\"Animal \"); }\n}\nclass Dog extends Animal {\n    Dog() { System.out.print(\"Dog \"); }\n}\n// In main:\nDog d = new Dog();",
     "options": ["Dog", "Animal", "Animal Dog", "Dog Animal"],
     "correctAnswerIndex": 2,
-    "subject": "JAVA",
+    "subject": "OOP",
     "type": "PROGRAMMING"
   },
   {
     "text": "We want to print \"Hello World\" to the console.",
     "options": ["public class Main { public static void main(String[] args) { System.out.println(\" World\"); } }", "public class Main { public static void main(String[] args) { printf(\"Hello World\"); } }", "public class Main { public static void main(String[] args) { System.out.println(\"Hello World\"); } }", "public class Main { public static void main(String[] args) { console.log(\"Hello World\"); } }"],
     "correctAnswerIndex": 2,
-    "subject": "JAVA",
+    "subject": "OOP",
     "type": "PROGRAMMING"
   },
   {
     "text": "Which keyword is used for inheritance in Java?",
     "options": ["imports", "extends", "implements", ":"],
     "correctAnswerIndex": 1,
-    "subject": "JAVA",
+    "subject": "OOP",
     "type": "PROGRAMMING"
   },
   {
     "text": "Which snippet correctly iterates through an array 'letters'?",
     "options": ["for (int i=0; i < letters.length; i++) ...", "for (String s : letters) ...", "System.out.println(letters);", "A and B are both correct."],
     "correctAnswerIndex": 3,
-    "subject": "JAVA",
+    "subject": "OOP",
     "type": "PROGRAMMING"
   },
   {
     "text": "How do you define an Interface named Shape?",
     "options": ["public abstract class Shape { ... }", "public interface Shape { void draw(); }", "public class Shape { ... }", "public interface Shape { public void draw() { } }"],
     "correctAnswerIndex": 1,
-    "subject": "JAVA",
+    "subject": "OOP",
     "type": "PROGRAMMING"
   },
   {
     "text": "How do you catch a NullPointerException specifically?",
     "options": ["catch (Exception e)", "catch (NullPointerException e)", "catch (IOException e)", "finally"],
     "correctAnswerIndex": 1,
-    "subject": "JAVA",
+    "subject": "OOP",
     "type": "PROGRAMMING"
   },
   {
     "text": "Which is the correct way to create a HashMap for names (String) and grades (Integer)?",
     "options": ["Map<String, Integer> grades = new HashMap<>();", "HashMap<String, Integer> grades = new HashMap();", "Map<String, int> grades = new HashMap<>();", "A and B are both correct."],
     "correctAnswerIndex": 3,
-    "subject": "JAVA",
+    "subject": "OOP",
     "type": "PROGRAMMING"
   },
   {
     "text": "We want to get the number of characters in a String variable s.",
     "options": ["s.length()", "s.length", "s.size()", "s.count()"],
     "correctAnswerIndex": 0,
-    "subject": "JAVA",
+    "subject": "OOP",
     "type": "PROGRAMMING"
   },
   {
     "text": "We want to check if the *content* of String s1 is the same as String s2.",
     "options": ["s1 == s2", "s1.equals(s2)", "s1.compareTo(s2) == 0", "B and C are both correct (for equality)."],
     "correctAnswerIndex": 3,
-    "subject": "JAVA",
+    "subject": "OOP",
     "type": "PROGRAMMING"
   },
   {
@@ -132,7 +132,7 @@
     "codeSnippet": "public ____ Dog {\n    String name;\n}",
     "options": ["class", "interface", "object", "struct"],
     "correctAnswerIndex": 0,
-    "subject": "JAVA",
+    "subject": "OOP",
     "type": "PROGRAMMING"
   },
   {
@@ -140,7 +140,7 @@
     "codeSnippet": "public class Person {\n    public ____ (String name) {\n        this.name = name;\n    }\n}",
     "options": ["void", "Person", "String", "PersonFactory"],
     "correctAnswerIndex": 1,
-    "subject": "JAVA",
+    "subject": "OOP",
     "type": "PROGRAMMING"
   },
   {
@@ -148,7 +148,7 @@
     "codeSnippet": "Dog(String name) {\n    ____ ; // Call Animal's constructor\n}",
     "options": ["this(name)", "Animal(name)", "super(name)", "super.Animal(name)"],
     "correctAnswerIndex": 2,
-    "subject": "JAVA",
+    "subject": "OOP",
     "type": "PROGRAMMING"
   },
   {
@@ -156,7 +156,7 @@
     "codeSnippet": "public class MyTask ____ Runnable { ... }",
     "options": ["extends", "implements", "uses", "inherits"],
     "correctAnswerIndex": 1,
-    "subject": "JAVA",
+    "subject": "OOP",
     "type": "PROGRAMMING"
   },
   {
@@ -164,7 +164,7 @@
     "codeSnippet": "int x = 10;\nif (x ____ 10) {\n    System.out.println(\"It is 10\");\n}",
     "options": ["equals", ".is()", "==", "="],
     "correctAnswerIndex": 2,
-    "subject": "JAVA",
+    "subject": "OOP",
     "type": "PROGRAMMING"
   },
   {
@@ -172,7 +172,7 @@
     "codeSnippet": "public String getName() {\n    ____ ;\n}",
     "options": ["return name", "return this.name", "System.out.println(this.name)", "A and B are both correct."],
     "correctAnswerIndex": 3,
-    "subject": "JAVA",
+    "subject": "OOP",
     "type": "PROGRAMMING"
   },
   {
@@ -180,7 +180,7 @@
     "codeSnippet": "try {\n    int result = 100 / 0;\n} ____ (Exception e) {\n    System.out.println(\"Error occurred\");\n}",
     "options": ["except", "when", "catch", "finally"],
     "correctAnswerIndex": 2,
-    "subject": "JAVA",
+    "subject": "OOP",
     "type": "PROGRAMMING"
   },
   {
@@ -188,7 +188,7 @@
     "codeSnippet": "____ ;\npublic class Test {\n    public static void main(String[] args) {\n        ArrayList<String> list = new ArrayList<>();\n    }\n}",
     "options": ["import java.ArrayList", "include java.util.ArrayList", "import java.util.ArrayList", "import java.util.*"],
     "correctAnswerIndex": 2,
-    "subject": "JAVA",
+    "subject": "OOP",
     "type": "PROGRAMMING"
   }
 ]
