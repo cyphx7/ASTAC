@@ -1,11 +1,20 @@
 package ui;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
+
+import java.util.Random;
 import java.util.Set;
 
 /**
@@ -13,7 +22,8 @@ import java.util.Set;
  * Completed subjects are disabled and marked as done.
  */
 public class SubjectSelection {
-    private final VBox layout;
+    private final StackPane root;
+    private final VBox contentLayout;
     private final WindowManager manager;
 
 
@@ -29,10 +39,46 @@ public class SubjectSelection {
 
     public SubjectSelection(WindowManager manager, Set<String> completedSubjects) {
         this.manager = manager;
+        root = new StackPane();
+        Rectangle backlight = new Rectangle();
+        backlight.setFill(Color.WHITE);
+        backlight.setOpacity(0.2);
+        backlight.widthProperty().bind(root.widthProperty());
+        backlight.heightProperty().bind(root.heightProperty());
 
-        layout = new VBox(30);
-        layout.setAlignment(Pos.CENTER);
-        layout.setStyle("-fx-background-color: " + Theme.BG_COLOR + ";");
+        Random rand = new Random();
+        Timeline backgroundFlicker = new Timeline(
+            new KeyFrame(Duration.millis(50), e -> {
+                double chance = rand.nextDouble(); 
+
+                if (chance < 0.01) { 
+                    // 3% Chance: Bright Flash (0.4 to 0.6 opacity)
+                    // We don't go to 1.0 (full white) so we can still see the UI a bit
+                    backlight.setOpacity(0.4 + (rand.nextDouble() * 0.2)); 
+                } else if (chance < 0.05) {
+                    // 7% Chance: Subtle dim flicker
+                    backlight.setOpacity(0.05); 
+                } else {
+                    // Mostly: Black (Invisible white layer)
+                    backlight.setOpacity(0.2);
+                }
+            })
+        );
+        backgroundFlicker.setCycleCount(Timeline.INDEFINITE);
+        backgroundFlicker.play();
+
+        contentLayout = new VBox(30);
+        contentLayout.setAlignment(Pos.CENTER);
+
+        Image bgImage = new Image(getClass().getResourceAsStream("../res/hologram.png"));
+        ImageView bgView = new ImageView(bgImage);
+        bgView.setSmooth(false);
+        bgView.setPreserveRatio(true);
+        bgView.setManaged(false);
+        bgView.fitWidthProperty().bind(root.widthProperty());
+        bgView.fitHeightProperty().bind(root.heightProperty());
+        
+        //layout.setStyle("-fx-background-color: " + Theme.BG_COLOR + ";");
 
         Label title = new Label("SELECT A SUBJECT");
         title.setTextFill(Color.web(Theme.ACCENT_COLOR));
@@ -61,11 +107,11 @@ public class SubjectSelection {
 
             grid.add(btn, i % 3, i / 3);
         }
-
-        layout.getChildren().addAll(title, grid);
+        contentLayout.getChildren().addAll(title, grid);
+        root.getChildren().addAll(backlight, bgView, contentLayout);
     }
 
-    public VBox getLayout() {
-        return layout;
+    public StackPane getLayout() {
+        return root;
     }
 }

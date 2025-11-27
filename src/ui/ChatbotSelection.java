@@ -1,29 +1,77 @@
 package ui;
 
+import java.util.Random;
+
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 import logic.Chatbot;
 
 /**
  * Screen for selecting an AI chatbot assistant with unique strengths and weaknesses.
  */
 public class ChatbotSelection {
-    private final VBox layout;
+    private final StackPane root;
+    private final VBox contentLayout;
     private final WindowManager manager;
 
     public ChatbotSelection(WindowManager manager) {
         this.manager = manager;
 
-        layout = new VBox(30);
-        layout.setAlignment(Pos.CENTER);
-        layout.setStyle("-fx-background-color: " + Theme.BG_COLOR + ";");
+        root = new StackPane();
+        root.setAlignment(Pos.CENTER);
+        root.setStyle("-fx-background-color: #000000");
 
+        Rectangle backlight = new Rectangle();
+        backlight.setFill(Color.WHITE);
+        backlight.setOpacity(0.2);
+        backlight.widthProperty().bind(root.widthProperty());
+        backlight.heightProperty().bind(root.heightProperty());
+
+        Random rand = new Random();
+        Timeline backgroundFlicker = new Timeline(
+            new KeyFrame(Duration.millis(50), e -> {
+                double chance = rand.nextDouble(); 
+
+                if (chance < 0.01) { 
+                    // 3% Chance: Bright Flash (0.4 to 0.6 opacity)
+                    // We don't go to 1.0 (full white) so we can still see the UI a bit
+                    backlight.setOpacity(0.4 + (rand.nextDouble() * 0.2)); 
+                } else if (chance < 0.05) {
+                    // 7% Chance: Subtle dim flicker
+                    backlight.setOpacity(0.05); 
+                } else {
+                    // Mostly: Black (Invisible white layer)
+                    backlight.setOpacity(0.2);
+                }
+            })
+        );
+        backgroundFlicker.setCycleCount(Timeline.INDEFINITE);
+        backgroundFlicker.play();
+
+        contentLayout = new VBox(30);
+        contentLayout.setAlignment(Pos.CENTER);
+
+        Image bgImage = new Image(getClass().getResourceAsStream("../res/hologram.png"));
+        ImageView bgView = new ImageView(bgImage);
+        bgView.setSmooth(false);
+        bgView.setPreserveRatio(true);
+        bgView.setManaged(false);
+        bgView.fitWidthProperty().bind(root.widthProperty());
+        bgView.fitHeightProperty().bind(root.heightProperty());
         // Header
         Label title = new Label("CHOOSE YOUR ASSISTANT");
         title.setTextFill(Color.web(Theme.ACCENT_COLOR));
@@ -40,44 +88,70 @@ public class ChatbotSelection {
         String[] botNames = {"CHATGPT", "GEMINI", "GROK", "COPILOT", "CLAUDE", "DEEPSEEK", "PERPLEXITY"};
 
         for (String name : botNames) {
-            VBox botCard = createBotCard(name);
+            Pane botCard = createBotCard(name);
             botGrid.getChildren().add(botCard);
         }
-
-        layout.getChildren().addAll(title, botGrid);
+        contentLayout.getChildren().addAll(title, botGrid);
+        root.getChildren().addAll(backlight, bgView, contentLayout);
     }
 
-    private VBox createBotCard(String name) {
-        VBox card = new VBox(10);
-        card.setAlignment(Pos.CENTER);
-        card.setPadding(new Insets(15));
-        card.setStyle("-fx-border-color: " + Theme.ACCENT_COLOR + "; -fx-border-width: 1px; -fx-background-color: #222;");
 
-        // Placeholder Avatar
-        Rectangle avatar = new Rectangle(80, 80, Color.web(Theme.ACCENT_COLOR));
+    private Pane createBotCard(String name) {
+        Image cardBgImage = new Image(getClass().getResourceAsStream("../res/card.png"));
+        ImageView cardBgView = new ImageView(cardBgImage);
+
+
+        cardBgView.setPreserveRatio(false);
+        cardBgView.setSmooth(false);
+        cardBgView.setStyle(
+                "-fx-background-color: transparent; " + 
+                "-fx-padding: 0; " + 
+                "-fx-background-radius: 0;"               
+            );
+
+        VBox contentBox = new VBox(10);
+        contentBox.setAlignment(Pos.CENTER);
+
+        contentBox.setPadding(new Insets(25));
+
+        Image chatbotAtlas = new Image(getClass().getResourceAsStream("../res/chatbots.png"));
+        ImageView avatar = new ImageView(chatbotAtlas);
+        int spriteIndex = getSpriteIndex(name);
+        int spriteSize = 32;
+        Rectangle2D viewport = new Rectangle2D(spriteIndex * spriteSize, 0, spriteSize, spriteSize);
+        avatar.setViewport(viewport);
+        avatar.setFitWidth(80);
+        avatar.setFitHeight(80);
+        avatar.setPreserveRatio(true);
+        avatar.setSmooth(false);
+        avatar.setStyle(
+                "-fx-background-color: transparent; " + 
+                "-fx-padding: 0; " + 
+                "-fx-background-radius: 0;"               
+            );
 
         Label nameLabel = new Label(name);
         nameLabel.setTextFill(Color.WHITE);
         nameLabel.setFont(Theme.FONT_NORMAL);
 
-
         String[] stats = assignStats(name);
-
 
         Button btnSelect = Theme.createStyledButton("SELECT");
         btnSelect.setOnAction(e -> {
-
             Chatbot selectedBot = new Chatbot(name, stats[0], stats[1]);
-
-
-
             manager.onChatbotSelected(selectedBot);
         });
 
-        card.getChildren().addAll(avatar, nameLabel, btnSelect);
-        return card;
-    }
+        contentBox.getChildren().addAll(avatar, nameLabel, btnSelect);
 
+        StackPane finalCardStack = new StackPane();
+
+        finalCardStack.getChildren().addAll(cardBgView, contentBox);
+        cardBgView.fitWidthProperty().bind(finalCardStack.widthProperty());
+        cardBgView.fitHeightProperty().bind(finalCardStack.heightProperty());
+
+        return finalCardStack;
+    }
 
     private String[] assignStats(String name) {
         switch (name) {
@@ -92,7 +166,20 @@ public class ChatbotSelection {
         }
     }
 
-    public VBox getLayout() {
-        return layout;
+    public Pane getLayout() {
+        return root;
+    }
+
+    private int getSpriteIndex(String name) {
+        switch(name.toUpperCase()) {
+            case "CHATGPT": return 0;
+            case "GEMINI": return 1;
+            case "GROK": return 2;
+            case "COPILOT": return 3;
+            case "CLAUDE": return 4;
+            case "DEEPSEEK": return 5;
+            case "PERPLEXITY": return 6;
+            default: return 0;
+        }
     }
 }
