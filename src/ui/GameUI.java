@@ -189,13 +189,13 @@ public class GameUI {
 
         qBoxBackground.fitWidthProperty().bind(qStack.widthProperty());
         qBoxBackground.fitHeightProperty().bind(qStack.heightProperty());
-        
+
 
         VBox qBoxContent = new VBox(15);
         qBoxContent.setAlignment(Pos.TOP_CENTER);
         qBoxContent.setMaxWidth(800);
         //questionBox.setStyle("-fx-background-color: #111; -fx-border-color: " + Theme.ACCENT_COLOR + "; -fx-border-width: 1px; -fx-padding: 20; -fx-background-radius: 10; -fx-border-radius: 10;");
-        qBoxContent.setStyle("-fx-padding: 30;");
+        qBoxContent.setStyle("-fx-padding: 15;");
 
 
         questionLabel = new Label("Loading Question...");
@@ -206,9 +206,9 @@ public class GameUI {
 
         codeArea = new TextArea();
         codeArea.setEditable(false);
-        codeArea.setWrapText(false);
+        codeArea.setWrapText(true);
         codeArea.setMaxHeight(150);
-        codeArea.setMaxWidth(700);
+        codeArea.setMaxWidth(800);
         codeArea.setStyle("-fx-control-inner-background: #000; -fx-font-family: 'Consolas'; -fx-text-fill: #00ff00; -fx-border-color: #333;");
         codeArea.setVisible(false);
 
@@ -223,7 +223,7 @@ public class GameUI {
         optionButtons = new Button[4];
         Image buttonImage = new Image(getClass().getResourceAsStream("../res/choice.png"));
         for (int i = 0; i < 4; i++) {
-            
+
             ImageView buttonSprite = new ImageView(buttonImage);
             buttonSprite.setFitWidth(400);
             buttonSprite.setFitHeight(90);
@@ -232,16 +232,17 @@ public class GameUI {
             optionButtons[i].setGraphic(buttonSprite);
             optionButtons[i].setContentDisplay(ContentDisplay.CENTER);
             optionButtons[i].setStyle(
-                "-fx-background-color: transparent; " + 
-                "-fx-padding: 0; " + 
-                "-fx-background-radius: 0;"               
+                    "-fx-background-color: transparent; " +
+                            "-fx-padding: 10 20 10 20; " +
+                            "-fx-background-radius: 0;"
 
-            );  
+            );
 
             optionButtons[i].setWrapText(true);
             optionButtons[i].setTextAlignment(TextAlignment.LEFT);
-            optionButtons[i].setPrefWidth(400);
-            optionButtons[i].setPrefHeight(90);
+            optionButtons[i].setPrefSize(400, 90);
+            optionButtons[i].setMinSize(400, 90);
+            optionButtons[i].setMaxSize(400, 90);
             optionButtons[i].setAlignment(Pos.CENTER_LEFT);
 
             optionsGrid.add(optionButtons[i], i % 2, i / 2);
