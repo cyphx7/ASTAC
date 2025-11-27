@@ -209,7 +209,20 @@ public class GameUI {
         codeArea.setWrapText(true);
         codeArea.setMaxHeight(150);
         codeArea.setMaxWidth(800);
-        codeArea.setStyle("-fx-control-inner-background: #000; -fx-font-family: 'Consolas'; -fx-text-fill: #00ff00; -fx-border-color: #333;");
+        codeArea.setStyle(
+                "-fx-background-color: rgba(80,185,235,0.20); " +
+                "-fx-control-inner-background: rgba(80,185,235,0.35); " +
+                "-fx-font-family: 'Consolas'; " +
+                "-fx-font-size: 17px; " +
+                "-fx-text-fill: black; " +
+                "-fx-highlight-fill: rgba(255,255,255,0.25); " +
+                "-fx-highlight-text-fill: black; " +
+                "-fx-border-color: #50b9eb; " +
+                "-fx-border-width: 1.5; " +
+                "-fx-background-radius: 10; " +
+                "-fx-border-radius: 10; " +
+                "-fx-effect: dropshadow(gaussian, rgba(80,185,235,0.35), 15, 0.3, 0, 0);"
+        );
         codeArea.setVisible(false);
 
         qBoxContent.getChildren().addAll(questionLabel, codeArea);
@@ -266,7 +279,7 @@ public class GameUI {
         botNameLabelBottom.setFont(Font.font("Consolas", FontWeight.BOLD, 12));
         botNameLabelBottom.setTextFill(Color.web(Theme.ACCENT_COLOR));
 
-        dialogLabel = new Label("Waiting for input...");
+        dialogLabel = new Label();
         dialogLabel.setTextFill(Color.WHITE);
         dialogLabel.setFont(Theme.FONT_NORMAL);
         dialogLabel.setWrapText(true);
