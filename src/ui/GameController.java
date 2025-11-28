@@ -24,13 +24,14 @@ public class GameController {
     }
 
     private void initController() {
+        manager.playClickSound();
         for (int i = 0; i < 4; i++) {
             final int index = i;
             ui.getOptionButtons()[i].setOnAction(e -> handleAnswer(index));
         }
 
-        ui.getBtnAsk().setOnAction(e -> handleAskBot());
-        ui.getBtnCopy().setOnAction(e -> handleCopyPaste());
+        ui.getBtnAsk().setOnAction(e -> {handleAskBot(); manager.playClickSound();});
+        ui.getBtnCopy().setOnAction(e -> {handleCopyPaste(); manager.playClickSound();});
 
         if (manager.isAskUsed()) {
             ui.getBtnAsk().setDisable(true);
@@ -99,9 +100,11 @@ public class GameController {
         GameSession.GameResult result = session.submitAnswer(index);
 
         if (result == GameSession.GameResult.CORRECT) {
+            manager.playSuccessSound();
             manager.showCustomAlert("CORRECT!", "Good job! Proceeding...", this::checkGameStatus);
         }
         else if (result == GameSession.GameResult.SAVED_BY_CHATBOT) {
+            manager.playErrorSound();
             ui.getBtnSave().setText("");
             ui.getBtnSave().setDisable(true);
             manager.markSaveUsed();
@@ -110,7 +113,7 @@ public class GameController {
             manager.showCustomAlert("SAVED!", "You were wrong, but " + session.getCurrentChatbot().getName() + " saved you!", this::checkGameStatus);
         }
         else if (result == GameSession.GameResult.WRONG_AND_FAILED) {
-
+            manager.playErrorSound();
             int totalScore = manager.getGlobalScore() + session.getScore();
             int percent = (int) ((totalScore / 14.0) * 100);
 
@@ -118,7 +121,7 @@ public class GameController {
             manager.showCustomAlert("GAME OVER", msg, manager::showMainMenu);
         }
         else {
-
+            manager.playErrorSound();
             int totalScore = manager.getGlobalScore() + session.getScore();
             int percent = (int) ((totalScore / 14.0) * 100);
 

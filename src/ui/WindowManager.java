@@ -34,6 +34,7 @@ public class WindowManager {
     private boolean isAskUsed = false;
     private boolean isCopyUsed = false;
     private boolean isSaveUsed = false;
+    private SoundManager soundManager;
 
     public WindowManager(Stage stage) {
         this.stage = stage;
@@ -50,9 +51,12 @@ public class WindowManager {
         this.stage.setScene(mainScene);
 
         new CursorManager(mainScene);
+        soundManager = new SoundManager();
 
         dataLoader = new JsonDataLoader();
-        dataLoader.loadQuestionsFromDirectory("MCQ");
+        dataLoader.loadQuestionsFromDirectory("/MCQ");
+
+        soundManager.playBackgroundMusic("../res/theme.mp3");
     }
 
     private void setRoot(Parent content) {
@@ -91,17 +95,20 @@ public class WindowManager {
     }
 
     public void showMainMenu() {
+        playClickSound();
         MainMenu menu = new MainMenu(this);
         setRoot(menu.getLayout());
     }
 
 
     public void showGuide() {
+        playClickSound();
         GuideScreen screen = new GuideScreen(this);
         setRoot(screen.getLayout());
     }
 
     public void startNewGame() {
+        playClickSound();
         completedSubjects = new HashSet<>();
         globalScore = 0;
         isAskUsed = false;
@@ -111,11 +118,13 @@ public class WindowManager {
     }
 
     public void showChatbotSelection() {
+        playClickSound();
         ChatbotSelection screen = new ChatbotSelection(this);
         setRoot(screen.getLayout());
     }
 
     public void showSubjectSelection() {
+        playClickSound();
         SubjectSelection screen = new SubjectSelection(this, completedSubjects);
         setRoot(screen.getLayout());
     }
@@ -180,6 +189,18 @@ public class WindowManager {
                 .filter(q -> q.getSubject().equalsIgnoreCase(subject))
                 .limit(2)
                 .collect(Collectors.toList());
+    }
+
+    public void playClickSound() {
+        soundManager.playSFX("../res/click.wav"); 
+    }
+
+    public void playSuccessSound() {
+        soundManager.playSFX("../res/success.wav");
+    }
+
+    public void playErrorSound() {
+        soundManager.playSFX("../res/error.wav");
     }
 
     
