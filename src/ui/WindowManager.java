@@ -4,7 +4,6 @@ import data.JsonDataLoader;
 import logic.Chatbot;
 import logic.GameSession;
 import logic.Question;
-
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -26,7 +25,11 @@ import java.util.stream.Collectors;
 public class WindowManager {
     private final Stage stage;
     private final Scene mainScene;
+
     private final StackPane rootStack;
+    private final StackPane contentLayer;
+
+    //private final CursorManager cursorManager;
 
 
     private JsonDataLoader dataLoader;
@@ -45,20 +48,24 @@ public class WindowManager {
         this.stage.setFullScreenExitHint("");
 
         this.rootStack = new StackPane();
+        this.contentLayer = new StackPane();
+        
+        this.rootStack.getChildren().addAll(contentLayer);
+        this.rootStack.setStyle("-fx-background-color: black");
         this.mainScene = new Scene(rootStack, 1280, 720);
 
         this.stage.setScene(mainScene);
+
+        new CursorManager(mainScene);
 
         dataLoader = new JsonDataLoader();
         dataLoader.loadQuestionsFromDirectory("MCQ");
     }
 
-
-
     private void setRoot(Parent content) {
-        rootStack.getChildren().clear();
-        rootStack.getChildren().add(content);
-        stage.setFullScreen(true);
+        contentLayer.getChildren().clear();
+        contentLayer.getChildren().add(content);
+        stage.setFullScreen(false);
         stage.show();
     }
 
@@ -82,12 +89,12 @@ public class WindowManager {
 
         Button btnOk = Theme.createStyledButton("CONTINUE");
         btnOk.setOnAction(e -> {
-            rootStack.getChildren().removeAll(dimmer, box);
+            contentLayer.getChildren().removeAll(dimmer, box);
             if (onDismiss != null) onDismiss.run();
         });
 
         box.getChildren().addAll(lblTitle, lblMsg, btnOk);
-        rootStack.getChildren().addAll(dimmer, box);
+        contentLayer.getChildren().addAll(dimmer, box);
     }
 
     public void showMainMenu() {
@@ -97,7 +104,6 @@ public class WindowManager {
 
 
     public void showGuide() {
-
         GuideScreen screen = new GuideScreen(this);
         setRoot(screen.getLayout());
     }
@@ -138,7 +144,7 @@ public class WindowManager {
             GameSession roundSession = new GameSession(currentChatbot, roundQuestions, this);
             currentChatbot.revealStats();
 
-            GameUI gameView = new GameUI();
+            GameUI gameView = new GameUI(currentChatbot);
             new GameController(roundSession, gameView, this);
 
             setRoot(gameView.getRoot());
@@ -182,4 +188,6 @@ public class WindowManager {
                 .limit(2)
                 .collect(Collectors.toList());
     }
+
+    
 }

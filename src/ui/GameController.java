@@ -34,14 +34,16 @@ public class GameController {
 
         if (manager.isAskUsed()) {
             ui.getBtnAsk().setDisable(true);
-            ui.getBtnAsk().setText("ASK USED");
+            ui.getBtnAsk().setText("");
+            ui.getBtnSave().setStyle("-fx-text-fill: " + Theme.ERROR_COLOR + "; -fx-border-color: " + Theme.ERROR_COLOR + ";");
         }
         if (manager.isCopyUsed()) {
             ui.getBtnCopy().setDisable(true);
-            ui.getBtnCopy().setText("COPY USED");
+            ui.getBtnSave().setStyle("-fx-text-fill: " + Theme.ERROR_COLOR + "; -fx-border-color: " + Theme.ERROR_COLOR + ";");
+            ui.getBtnCopy().setText("");
         }
         if (manager.isSaveUsed()) {
-            ui.getBtnSave().setText("SAVE USED");
+            ui.getBtnSave().setText("");
             ui.getBtnSave().setStyle("-fx-text-fill: " + Theme.ERROR_COLOR + "; -fx-border-color: " + Theme.ERROR_COLOR + ";");
         }
     }
@@ -81,7 +83,12 @@ public class GameController {
             }
         }
 
-        ui.getDialogLabel().setText("Waiting...");
+        String introMsg = bot.isRevealed()
+                ? String.format("Hey! I am good at %s but bad at %s.",
+                    bot.getStrengthSubject(),
+                    bot.getWeaknessSubject())
+                : "Waiting...";
+        ui.getDialogLabel().setText(introMsg);
 
         double progress = (double) (manager.getGlobalScore() + session.getScore()) / 14.0;
         ui.getProgressBar().setProgress(progress);
@@ -95,8 +102,11 @@ public class GameController {
             manager.showCustomAlert("CORRECT!", "Good job! Proceeding...", this::checkGameStatus);
         }
         else if (result == GameSession.GameResult.SAVED_BY_CHATBOT) {
-            ui.getBtnSave().setText("SAVE USED");
-            ui.getBtnSave().setStyle("-fx-text-fill: " + Theme.ERROR_COLOR + "; -fx-border-color: " + Theme.ERROR_COLOR + ";");
+            ui.getBtnSave().setText("");
+            ui.getBtnSave().setDisable(true);
+            manager.markSaveUsed();
+
+            //ui.getBtnSave().setStyle("-fx-text-fill: " + Theme.ERROR_COLOR + "; -fx-border-color: " + Theme.ERROR_COLOR + ";");
 
             manager.showCustomAlert("SAVED!", "You were wrong, but " + session.getCurrentChatbot().getName() + " saved you!", this::checkGameStatus);
         }
@@ -131,7 +141,7 @@ public class GameController {
     private void handleAskBot() {
         manager.markAskUsed();
         ui.getBtnAsk().setDisable(true);
-        ui.getBtnAsk().setText("ASK USED");
+        ui.getBtnAsk().setText("");
 
         Question q = session.getCurrentQuestion();
         Chatbot bot = session.getCurrentChatbot();
@@ -169,7 +179,7 @@ public class GameController {
     private void handleCopyPaste() {
         manager.markCopyUsed();
         ui.getBtnCopy().setDisable(true);
-        ui.getBtnCopy().setText("COPY USED");
+        ui.getBtnCopy().setText("");
 
         Question q = session.getCurrentQuestion();
         Chatbot bot = session.getCurrentChatbot();
