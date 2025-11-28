@@ -27,16 +27,13 @@ public class GameUI {
     private final StackPane root;
     private Label subjectLabel;
     private ImageView botAvatar;
-
     private Label questionLabel;
     private TextArea codeArea;
     private Button[] optionButtons;
-
     private Label dialogLabel;
     private Label botNameLabelBottom;
     private ProgressBar progressBar;
     private Label progressLabel;
-
     private Button btnAsk;
     private Button btnCopy;
     private Button btnSave;

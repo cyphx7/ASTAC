@@ -54,7 +54,6 @@ public class JsonDataLoader {
         for (String subject : questionBank.keySet()) {
             List<Question> subjectQuestions = questionBank.get(subject);
             Collections.shuffle(subjectQuestions);
-
             int takeCount = Math.min(subjectQuestions.size(), 2);
             gameSet.addAll(subjectQuestions.subList(0, takeCount));
         }

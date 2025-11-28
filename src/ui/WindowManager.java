@@ -25,19 +25,12 @@ import java.util.stream.Collectors;
 public class WindowManager {
     private final Stage stage;
     private final Scene mainScene;
-
     private final StackPane rootStack;
     private final StackPane contentLayer;
-
-    //private final CursorManager cursorManager;
-
-
     private JsonDataLoader dataLoader;
     private Chatbot currentChatbot;
     private Set<String> completedSubjects;
     private int globalScore;
-
-
     private boolean isAskUsed = false;
     private boolean isCopyUsed = false;
     private boolean isSaveUsed = false;
