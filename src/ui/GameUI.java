@@ -27,13 +27,16 @@ public class GameUI {
     private final StackPane root;
     private Label subjectLabel;
     private ImageView botAvatar;
+
     private Label questionLabel;
     private TextArea codeArea;
     private Button[] optionButtons;
+
     private Label dialogLabel;
     private Label botNameLabelBottom;
     private ProgressBar progressBar;
     private Label progressLabel;
+
     private Button btnAsk;
     private Button btnCopy;
     private Button btnSave;
@@ -48,6 +51,7 @@ public class GameUI {
         bgView.setManaged(false);
 
         uiLayer = new BorderPane();
+        //root.setStyle("-fx-background-color: " + Theme.BG_COLOR + ";");
 
         createTopPanel();
         createCenterPanel();
@@ -68,9 +72,11 @@ public class GameUI {
     BorderPane topContainer = new BorderPane();
     topContainer.setPadding(new Insets(20));
 
+    // --- LEFT SIDE (Avatar) ---
     VBox topLeft = new VBox(10);
     topLeft.setAlignment(Pos.TOP_LEFT);
 
+    // (Keeping your placeholder rectangle for now, as requested)
     Image chatbotAtlas = new Image(getClass().getResourceAsStream("../res/chatbots.png"));
     botAvatar = new ImageView(chatbotAtlas);
     int spriteSize = 32;
@@ -95,24 +101,30 @@ public class GameUI {
 
     topLeft.getChildren().addAll(botAvatar);
 
+    // --- RIGHT SIDE (Tools + Subject) ---
     VBox topRight = new VBox(10);
     topRight.setAlignment(Pos.TOP_RIGHT);
 
     HBox toolsBox = new HBox(5); // Spacing between icons
     toolsBox.setAlignment(Pos.CENTER_RIGHT);
 
+    // 1. Load the Atlas (Contains Ask, Copy, Save icons side-by-side)
+    // Make sure this file exists in your resources!
     Image toolsAtlas = new Image(getClass().getResourceAsStream("../res/commands.png"));
 
+    // --- BUTTON 1: ASK (Index 0) ---
     ImageView askIcon = new ImageView(toolsAtlas);
     askIcon.setViewport(new Rectangle2D(0, 0, 128, 128)); // First sprite
     askIcon.setFitWidth(64); 
     askIcon.setFitHeight(64);
-    askIcon.setSmooth(false);
+    askIcon.setSmooth(false); // Uncomment if using pixel art
 
     btnAsk = new Button();
     btnAsk.setGraphic(askIcon);
     btnAsk.setStyle("-fx-background-color: transparent; -fx-padding: 0; -fx-background-radius: 0; -fx-border-width: 0;");
+    //configureTransparentButton(btnAsk);
 
+    // --- BUTTON 2: COPY (Index 1) ---
     ImageView copyIcon = new ImageView(toolsAtlas);
     copyIcon.setViewport(new Rectangle2D(128, 0, 128, 128)); // Second sprite (x = 128)
     copyIcon.setFitWidth(64);
@@ -122,9 +134,11 @@ public class GameUI {
     btnCopy = new Button();
     btnCopy.setGraphic(copyIcon);
     btnCopy.setStyle("-fx-background-color: transparent; -fx-padding: 0; -fx-background-radius: 0; -fx-border-width: 0;");
+    //configureTransparentButton(btnCopy);
 
+    // --- BUTTON 3: SAVE (Index 2) ---
     ImageView saveIcon = new ImageView(toolsAtlas);
-    saveIcon.setViewport(new Rectangle2D(256, 0, 128, 128));
+    saveIcon.setViewport(new Rectangle2D(256, 0, 128, 128)); // Third sprite (x = 256)
     saveIcon.setFitWidth(64);
     saveIcon.setFitHeight(64);
     saveIcon.setSmooth(false);
@@ -132,11 +146,14 @@ public class GameUI {
     btnSave = new Button();
     btnSave.setGraphic(saveIcon);
     btnSave.setStyle("-fx-background-color: transparent; -fx-padding: 0; -fx-background-radius: 0; -fx-border-width: 0;");
+    //configureTransparentButton(btnSave);
     
     btnSave.setDisable(true); 
 
+    // Add to container
     toolsBox.getChildren().addAll(btnAsk, btnCopy, btnSave);
 
+    // Subject Label
     subjectLabel = new Label("Subject: LOADING...");
     subjectLabel.setFont(Theme.FONT_NORMAL);
     subjectLabel.setTextFill(Color.WHITE);
@@ -151,7 +168,8 @@ public class GameUI {
 
 
     private void createCenterPanel() {
-        VBox centerContainer = new VBox(30);
+        // Main container for Question + Options to ensure alignment
+        VBox centerContainer = new VBox(30); // Spacing between Question and Options
         centerContainer.setAlignment(Pos.TOP_CENTER);
         centerContainer.setPadding(new Insets(10, 40, 20, 40));
 
@@ -171,11 +189,12 @@ public class GameUI {
 
         qBoxBackground.fitWidthProperty().bind(qStack.widthProperty());
         qBoxBackground.fitHeightProperty().bind(qStack.heightProperty());
-
+        
 
         VBox qBoxContent = new VBox(15);
         qBoxContent.setAlignment(Pos.TOP_CENTER);
         qBoxContent.setMaxWidth(800);
+        //questionBox.setStyle("-fx-background-color: #111; -fx-border-color: " + Theme.ACCENT_COLOR + "; -fx-border-width: 1px; -fx-padding: 20; -fx-background-radius: 10; -fx-border-radius: 10;");
         qBoxContent.setStyle("-fx-padding: 15;");
 
 
@@ -190,20 +209,7 @@ public class GameUI {
         codeArea.setWrapText(true);
         codeArea.setMaxHeight(150);
         codeArea.setMaxWidth(800);
-        codeArea.setStyle(
-                "-fx-background-color: rgba(80,185,235,0.20); " +
-                "-fx-control-inner-background: rgba(80,185,235,0.35); " +
-                "-fx-font-family: 'Consolas'; " +
-                "-fx-font-size: 17px; " +
-                "-fx-text-fill: black; " +
-                "-fx-highlight-fill: rgba(255,255,255,0.25); " +
-                "-fx-highlight-text-fill: black; " +
-                "-fx-border-color: #50b9eb; " +
-                "-fx-border-width: 1.5; " +
-                "-fx-background-radius: 10; " +
-                "-fx-border-radius: 10; " +
-                "-fx-effect: dropshadow(gaussian, rgba(80,185,235,0.35), 15, 0.3, 0, 0);"
-        );
+        codeArea.setStyle("-fx-control-inner-background: #000; -fx-font-family: 'Consolas'; -fx-text-fill: #00ff00; -fx-border-color: #333;");
         codeArea.setVisible(false);
 
         qBoxContent.getChildren().addAll(questionLabel, codeArea);
@@ -217,7 +223,7 @@ public class GameUI {
         optionButtons = new Button[4];
         Image buttonImage = new Image(getClass().getResourceAsStream("../res/choice.png"));
         for (int i = 0; i < 4; i++) {
-
+            
             ImageView buttonSprite = new ImageView(buttonImage);
             buttonSprite.setFitWidth(400);
             buttonSprite.setFitHeight(90);
@@ -226,11 +232,11 @@ public class GameUI {
             optionButtons[i].setGraphic(buttonSprite);
             optionButtons[i].setContentDisplay(ContentDisplay.CENTER);
             optionButtons[i].setStyle(
-                    "-fx-background-color: transparent; " +
-                            "-fx-padding: 10 20 10 20; " +
-                            "-fx-background-radius: 0;"
+                "-fx-background-color: transparent; " + 
+                "-fx-padding: 10 20 10 20; " + 
+                "-fx-background-radius: 0;"               
 
-            );
+            );  
 
             optionButtons[i].setWrapText(true);
             optionButtons[i].setTextAlignment(TextAlignment.LEFT);
@@ -260,7 +266,7 @@ public class GameUI {
         botNameLabelBottom.setFont(Font.font("Consolas", FontWeight.BOLD, 12));
         botNameLabelBottom.setTextFill(Color.web(Theme.ACCENT_COLOR));
 
-        dialogLabel = new Label();
+        dialogLabel = new Label("Waiting for input...");
         dialogLabel.setTextFill(Color.WHITE);
         dialogLabel.setFont(Theme.FONT_NORMAL);
         dialogLabel.setWrapText(true);

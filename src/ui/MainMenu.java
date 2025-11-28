@@ -30,6 +30,7 @@ public class MainMenu {
         titleView.setSmooth(false);
         titleView.setPreserveRatio(true);
 
+        // Buttons
         Button btnPlay = createSpriteButton("PLAY GAME");
         Button btnGuide = createSpriteButton("GUIDE");
         Button btnSettings = createSpriteButton("SETTINGS");
@@ -46,6 +47,7 @@ public class MainMenu {
         contentBox.getChildren().addAll(titleView, buttonRow);
 
         layout = new StackPane();
+        // Add visuals
         layout.getChildren().addAll(bgView, contentBox);
         bgView.fitWidthProperty().bind(layout.widthProperty().multiply(0.50));
         bgView.fitHeightProperty().bind(layout.heightProperty().multiply(0.30));
@@ -59,26 +61,33 @@ public class MainMenu {
     private Button createSpriteButton(String text) {
     Button btn = new Button(text);
 
+    // 1. Load the Image (128x64)
+    // Make sure "button_sprite.png" is in your resources folder
     Image img = new Image(getClass().getResourceAsStream("../res/mainbutton.png"));
     ImageView view = new ImageView(img);
 
+    // 2. Set Size
     view.setFitWidth(128);
     view.setFitHeight(64);
-    view.setSmooth(false);
+    view.setSmooth(false); // Uncomment if it's pixel art
 
+    // 3. Set the Graphic
     btn.setGraphic(view);
 
+    // 4. CRITICAL: Layer Text on TOP of Image
     btn.setContentDisplay(ContentDisplay.CENTER);
 
+    // 5. CSS: Make the actual button transparent so only Sprite + Text shows
     btn.setStyle(
-        "-fx-background-color: transparent; " +
-        "-fx-padding: 0; " +
+        "-fx-background-color: transparent; " + // Hide standard gray button                  
+        "-fx-padding: 0; " +                    // Remove padding so size matches image exactly
         "-fx-background-radius: 0; " +          
         "-fx-border-width: 0;"
     );
 
+    // 6. Text Styling (Ensure contrast against your sprite)
     btn.setTextFill(Color.WHITE); 
-    btn.setFont(Theme.FONT_NORMAL);
+    btn.setFont(Theme.FONT_NORMAL); // Or use a custom font size like Font.font("Consolas", 14)
 
     return btn;
     }

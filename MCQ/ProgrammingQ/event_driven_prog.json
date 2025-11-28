@@ -1,0 +1,65 @@
+[
+  {
+    "text": "JS: Output of '5' + 5.",
+    "options": ["10", "55 (number)", "'55' (string)", "Error"],
+    "correctAnswerIndex": 2,
+    "subject": "EVENT_DRIVEN",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "JS: Output of let x=10; {let x=20; log(x)} log(x).",
+    "options": ["20 10", "20 20", "10 10", "10 20"],
+    "correctAnswerIndex": 0,
+    "subject": "EVENT_DRIVEN",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "JS: Select element by ID 'main-title'.",
+    "options": ["querySelector", "getElementById", "getElementsByClassName", "A and B"],
+    "correctAnswerIndex": 3,
+    "subject": "EVENT_DRIVEN",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "JS: Object literal syntax.",
+    "options": ["const user = { 'name': 'Ben' }", "const user = { name: 'Ben' }", "new Object", "A and B"],
+    "correctAnswerIndex": 3,
+    "subject": "EVENT_DRIVEN",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "JS: Attach click listener.",
+    "options": ["onClick", "on", "addEventListener", "attachEvent"],
+    "correctAnswerIndex": 2,
+    "subject": "EVENT_DRIVEN",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "JS: Strict equality check.",
+    "options": ["==", "===", "is", "equals"],
+    "correctAnswerIndex": 1,
+    "subject": "EVENT_DRIVEN",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "JS: Define function calculate.",
+    "options": ["def", "const", "function", "void"],
+    "correctAnswerIndex": 2,
+    "subject": "EVENT_DRIVEN",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "JS: Get array length.",
+    "options": ["length()", "size()", "size", "length"],
+    "correctAnswerIndex": 3,
+    "subject": "EVENT_DRIVEN",
+    "type": "PROGRAMMING"
+  },
+  {
+    "text": "Java OOP Override output (Dog woof).",
+    "options": ["?", "Woof", "?Woof", "Error"],
+    "correctAnswerIndex": 1,
+    "subject": "EVENT_DRIVEN",
+    "type": "PROGRAMMING"
+  }
+]

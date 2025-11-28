@@ -18,10 +18,12 @@ public class GuideScreen {
         layout.setAlignment(Pos.CENTER);
         layout.setStyle("-fx-background-color: " + Theme.BG_COLOR + "; -fx-padding: 40;");
 
+        // Title
         Label title = new Label("GAME MECHANICS");
         title.setTextFill(Color.web(Theme.ACCENT_COLOR));
         title.setFont(Theme.FONT_HEADER);
 
+        // Guide Text
         String text =
                 "OBJECTIVE:\n" +
                         "Answer 14 questions across 7 subjects to prove you are Smarter Than a Chatbot!\n\n" +

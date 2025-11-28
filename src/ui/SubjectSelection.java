@@ -51,11 +51,15 @@ public class SubjectSelection {
             new KeyFrame(Duration.millis(50), e -> {
                 double chance = rand.nextDouble(); 
 
-                if (chance < 0.01) {
+                if (chance < 0.01) { 
+                    // 3% Chance: Bright Flash (0.4 to 0.6 opacity)
+                    // We don't go to 1.0 (full white) so we can still see the UI a bit
                     backlight.setOpacity(0.4 + (rand.nextDouble() * 0.2)); 
                 } else if (chance < 0.05) {
+                    // 7% Chance: Subtle dim flicker
                     backlight.setOpacity(0.05); 
                 } else {
+                    // Mostly: Black (Invisible white layer)
                     backlight.setOpacity(0.2);
                 }
             })
@@ -73,6 +77,8 @@ public class SubjectSelection {
         bgView.setManaged(false);
         bgView.fitWidthProperty().bind(root.widthProperty());
         bgView.fitHeightProperty().bind(root.heightProperty());
+        
+        //layout.setStyle("-fx-background-color: " + Theme.BG_COLOR + ";");
 
         Label title = new Label("SELECT A SUBJECT");
         title.setTextFill(Color.web(Theme.ACCENT_COLOR));
@@ -83,10 +89,12 @@ public class SubjectSelection {
         grid.setHgap(20);
         grid.setVgap(20);
 
+        // Create buttons for 7 subjects
         for (int i = 0; i < subjects.length; i++) {
             String subjectName = subjects[i];
             Button btn = Theme.createStyledButton(subjectName);
             btn.setPrefSize(200, 60);
+
 
             if (completedSubjects.contains(subjectName)) {
                 btn.setDisable(true);

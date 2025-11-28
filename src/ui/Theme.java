@@ -10,21 +10,26 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
 /**
- * Provides consistent colors, fonts, and button styling.
+ * Centralized theme and styling utilities for the cyberpunk-themed UI.
+ * Provides consistent colors, fonts, and button styling across the application.
  */
 public class Theme {
 
-    public static final String BG_COLOR = "#0d0d0d";
-    public static final String PRIMARY_COLOR = "#1a1a1a";
-    public static final String ACCENT_COLOR = "#00e5ff";
-    public static final String ERROR_COLOR = "#ff3333";
+    public static final String BG_COLOR = "#0d0d0d";       // Almost Black (Main Background)
+    public static final String PRIMARY_COLOR = "#1a1a1a";  // Dark Grey (Panels)
+    public static final String ACCENT_COLOR = "#00e5ff";   // Neon Cyan (Text/Borders)
+    public static final String ERROR_COLOR = "#ff3333";    // Neon Red (Errors/Warnings)
 
 
     public static final Font FONT_HEADER = Font.font("Consolas", FontWeight.BOLD, 28);
     public static final Font FONT_NORMAL = Font.font("Consolas", FontWeight.NORMAL, 16);
 
+    /**
+     * Applies the standard Cyberpunk look to an EXISTING button.
+     * Use this for buttons defined in GameUI or elsewhere that are not created via the factory.
+     */
     public static void applyCyberpunkStyle(Button btn) {
-        if (btn == null) return;
+        if (btn == null) return; // Safety check
 
         btn.setFont(FONT_NORMAL);
         btn.setTextFill(Color.WHITE);
@@ -44,6 +49,10 @@ public class Theme {
         });
     }
 
+    /**
+     * Factory method: Creates a NEW button with the Cyberpunk style already applied.
+     * Used by MainMenu, SubjectSelection, etc.
+     */
     public static Button createStyledButton(String text) {
         Button btn = new Button(text);
         applyCyberpunkStyle(btn);
