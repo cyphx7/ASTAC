@@ -106,7 +106,6 @@ public class GameController {
             ui.getBtnSave().setDisable(true);
             manager.markSaveUsed();
 
-            //ui.getBtnSave().setStyle("-fx-text-fill: " + Theme.ERROR_COLOR + "; -fx-border-color: " + Theme.ERROR_COLOR + ";");
 
             manager.showCustomAlert("SAVED!", "You were wrong, but " + session.getCurrentChatbot().getName() + " saved you!", this::checkGameStatus);
         }

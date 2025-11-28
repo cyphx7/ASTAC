@@ -51,7 +51,6 @@ public class GameUI {
         bgView.setManaged(false);
 
         uiLayer = new BorderPane();
-        //root.setStyle("-fx-background-color: " + Theme.BG_COLOR + ";");
 
         createTopPanel();
         createCenterPanel();
@@ -72,11 +71,9 @@ public class GameUI {
     BorderPane topContainer = new BorderPane();
     topContainer.setPadding(new Insets(20));
 
-    // --- LEFT SIDE (Avatar) ---
     VBox topLeft = new VBox(10);
     topLeft.setAlignment(Pos.TOP_LEFT);
 
-    // (Keeping your placeholder rectangle for now, as requested)
     Image chatbotAtlas = new Image(getClass().getResourceAsStream("../res/chatbots.png"));
     botAvatar = new ImageView(chatbotAtlas);
     int spriteSize = 32;
@@ -101,30 +98,24 @@ public class GameUI {
 
     topLeft.getChildren().addAll(botAvatar);
 
-    // --- RIGHT SIDE (Tools + Subject) ---
     VBox topRight = new VBox(10);
     topRight.setAlignment(Pos.TOP_RIGHT);
 
     HBox toolsBox = new HBox(5); // Spacing between icons
     toolsBox.setAlignment(Pos.CENTER_RIGHT);
 
-    // 1. Load the Atlas (Contains Ask, Copy, Save icons side-by-side)
-    // Make sure this file exists in your resources!
     Image toolsAtlas = new Image(getClass().getResourceAsStream("../res/commands.png"));
 
-    // --- BUTTON 1: ASK (Index 0) ---
     ImageView askIcon = new ImageView(toolsAtlas);
     askIcon.setViewport(new Rectangle2D(0, 0, 128, 128)); // First sprite
     askIcon.setFitWidth(64); 
     askIcon.setFitHeight(64);
-    askIcon.setSmooth(false); // Uncomment if using pixel art
+    askIcon.setSmooth(false);
 
     btnAsk = new Button();
     btnAsk.setGraphic(askIcon);
     btnAsk.setStyle("-fx-background-color: transparent; -fx-padding: 0; -fx-background-radius: 0; -fx-border-width: 0;");
-    //configureTransparentButton(btnAsk);
 
-    // --- BUTTON 2: COPY (Index 1) ---
     ImageView copyIcon = new ImageView(toolsAtlas);
     copyIcon.setViewport(new Rectangle2D(128, 0, 128, 128)); // Second sprite (x = 128)
     copyIcon.setFitWidth(64);
@@ -134,11 +125,9 @@ public class GameUI {
     btnCopy = new Button();
     btnCopy.setGraphic(copyIcon);
     btnCopy.setStyle("-fx-background-color: transparent; -fx-padding: 0; -fx-background-radius: 0; -fx-border-width: 0;");
-    //configureTransparentButton(btnCopy);
 
-    // --- BUTTON 3: SAVE (Index 2) ---
     ImageView saveIcon = new ImageView(toolsAtlas);
-    saveIcon.setViewport(new Rectangle2D(256, 0, 128, 128)); // Third sprite (x = 256)
+    saveIcon.setViewport(new Rectangle2D(256, 0, 128, 128));
     saveIcon.setFitWidth(64);
     saveIcon.setFitHeight(64);
     saveIcon.setSmooth(false);
@@ -146,14 +135,11 @@ public class GameUI {
     btnSave = new Button();
     btnSave.setGraphic(saveIcon);
     btnSave.setStyle("-fx-background-color: transparent; -fx-padding: 0; -fx-background-radius: 0; -fx-border-width: 0;");
-    //configureTransparentButton(btnSave);
     
     btnSave.setDisable(true); 
 
-    // Add to container
     toolsBox.getChildren().addAll(btnAsk, btnCopy, btnSave);
 
-    // Subject Label
     subjectLabel = new Label("Subject: LOADING...");
     subjectLabel.setFont(Theme.FONT_NORMAL);
     subjectLabel.setTextFill(Color.WHITE);
@@ -168,8 +154,7 @@ public class GameUI {
 
 
     private void createCenterPanel() {
-        // Main container for Question + Options to ensure alignment
-        VBox centerContainer = new VBox(30); // Spacing between Question and Options
+        VBox centerContainer = new VBox(30);
         centerContainer.setAlignment(Pos.TOP_CENTER);
         centerContainer.setPadding(new Insets(10, 40, 20, 40));
 
@@ -194,7 +179,6 @@ public class GameUI {
         VBox qBoxContent = new VBox(15);
         qBoxContent.setAlignment(Pos.TOP_CENTER);
         qBoxContent.setMaxWidth(800);
-        //questionBox.setStyle("-fx-background-color: #111; -fx-border-color: " + Theme.ACCENT_COLOR + "; -fx-border-width: 1px; -fx-padding: 20; -fx-background-radius: 10; -fx-border-radius: 10;");
         qBoxContent.setStyle("-fx-padding: 15;");
 
 

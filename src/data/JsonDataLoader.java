@@ -55,7 +55,6 @@ public class JsonDataLoader {
             List<Question> subjectQuestions = questionBank.get(subject);
             Collections.shuffle(subjectQuestions);
 
-            // Take up to 2 questions
             int takeCount = Math.min(subjectQuestions.size(), 2);
             gameSet.addAll(subjectQuestions.subList(0, takeCount));
         }

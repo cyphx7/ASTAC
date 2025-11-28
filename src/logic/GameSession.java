@@ -16,8 +16,8 @@ public class GameSession {
 
     public enum GameResult {
         CORRECT,
-        WRONG_AND_FAILED,   // Bot tried to save but failed
-        SAVED_BY_CHATBOT,   // Bot tried and succeeded
+        WRONG_AND_FAILED,
+        SAVED_BY_CHATBOT,
         GAME_OVER   
     }
 
@@ -60,19 +60,17 @@ public class GameSession {
 
 
             if (!manager.isSaveUsed()) {
-                manager.markSaveUsed(); // Mark it as used globally
-
+                manager.markSaveUsed();
                 boolean saved = currentChatbot.calculateSuccess(q.getSubject());
 
                 if (saved) {
-                    currentQuestionIndex++; // Saved! Move on.
+                    currentQuestionIndex++;
                     return GameResult.SAVED_BY_CHATBOT;
                 } else {
 
                     return GameResult.WRONG_AND_FAILED;
                 }
             } else {
-                // No save left at all
                 return GameResult.GAME_OVER;
             }
         }

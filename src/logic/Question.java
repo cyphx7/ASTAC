@@ -8,10 +8,10 @@ import java.util.List;
  */
 public class Question {
     private String text;
-    private String codeSnippet; // Can be null if it's a theoretical question
+    private String codeSnippet;
     private List<String> options;
-    private int correctAnswerIndex; // 0 to 3
-    private String subject; // e.g., "Variables", "Loops"
+    private int correctAnswerIndex;
+    private String subject;
     private QuestionType type;
 
     public enum QuestionType {
@@ -19,7 +19,6 @@ public class Question {
         PROGRAMMING
     }
 
-    // Constructor
     public Question(String text, String codeSnippet, List<String> options, int correctAnswerIndex, String subject, QuestionType type) {
         this.text = text;
         this.codeSnippet = codeSnippet;
@@ -29,7 +28,6 @@ public class Question {
         this.type = type;
     }
 
-    // Getters
     public String getText() { return text; }
     public String getCodeSnippet() { return codeSnippet; }
     public List<String> getOptions() { return options; }

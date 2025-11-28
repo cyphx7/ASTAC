@@ -26,13 +26,11 @@ public class Chatbot {
     }
 
     public boolean calculateSuccess(String currentSubject) {
-        double roll = random.nextDouble(); // 0.0 to 1.0
+        double roll = random.nextDouble();
 
         if (currentSubject.equalsIgnoreCase(strengthSubject)) {
-            // Strength: 90% chance of being correct
             return roll < 0.90;
         } else if (currentSubject.equalsIgnoreCase(weaknessSubject)) {
-            // Weakness: 10% chance of being correct
             return roll < 0.10;
         } else {
             // Neutral: 50% chance
